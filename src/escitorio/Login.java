@@ -69,7 +69,7 @@ public class Login extends javax.swing.JFrame {
         background.setBackground(new java.awt.Color(255, 255, 255));
         background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel6.setBackground(new java.awt.Color(138, 237, 237));
+        jPanel6.setBackground(new java.awt.Color(157, 214, 238));
         jPanel6.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 jPanel6MouseDragged(evt);
@@ -85,7 +85,7 @@ public class Login extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Roboto Black", 0, 24)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("BOOKWORK");
-        jPanel6.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 220, 50));
+        jPanel6.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 220, 50));
 
         jpl_minus.setBackground(new java.awt.Color(204, 204, 204));
         jpl_minus.setMinimumSize(new java.awt.Dimension(40, 40));
@@ -196,7 +196,8 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("INICIO DE SESION");
 
-        jbtn_Registrarse.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
+        jbtn_Registrarse.setBackground(new java.awt.Color(255, 255, 255));
+        jbtn_Registrarse.setFont(new java.awt.Font("Roboto Black", 1, 17)); // NOI18N
         jbtn_Registrarse.setForeground(new java.awt.Color(138, 237, 237));
         jbtn_Registrarse.setText("REGISTRARSE");
         jbtn_Registrarse.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -210,7 +211,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jPanel3.setBackground(new java.awt.Color(138, 237, 237));
+        jPanel3.setBackground(new java.awt.Color(157, 214, 238));
 
         jbl_ingresar.setBackground(new java.awt.Color(255, 255, 255));
         jbl_ingresar.setFont(new java.awt.Font("Roboto Black", 0, 14)); // NOI18N
@@ -276,7 +277,7 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbtn_Registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         background.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 630, 330));
@@ -354,7 +355,9 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jtxt_passMousePressed
 
     private void jbl_ingresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbl_ingresarMouseClicked
-        javax.swing.JOptionPane.showMessageDialog(this,"USUARIO: "+jtxt_usuario.getText()+"\nCONTRASEÑA: "+jtxt_pass.getText());
+        Menu_Principal a = new Menu_Principal();
+        a.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_jbl_ingresarMouseClicked
 
     private void jbtn_RegistrarseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtn_RegistrarseMouseClicked

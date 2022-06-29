@@ -17,6 +17,7 @@ public class Contacto extends javax.swing.JFrame {
     int xmouse, ymouse;
     public Contacto() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -68,12 +69,17 @@ public class Contacto extends javax.swing.JFrame {
         jLabel4.setText("www.bookwork.com");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 360, 190, 40));
 
-        jpl_Aceptar.setBackground(new java.awt.Color(138, 237, 237));
+        jpl_Aceptar.setBackground(new java.awt.Color(157, 214, 238));
 
         jbl_Aceptar.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
         jbl_Aceptar.setForeground(new java.awt.Color(255, 255, 255));
         jbl_Aceptar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jbl_Aceptar.setText("ACEPTAR");
+        jbl_Aceptar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jbl_AceptarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpl_AceptarLayout = new javax.swing.GroupLayout(jpl_Aceptar);
         jpl_Aceptar.setLayout(jpl_AceptarLayout);
@@ -88,8 +94,9 @@ public class Contacto extends javax.swing.JFrame {
 
         jPanel1.add(jpl_Aceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 410, 130, 40));
 
-        jpl_Cancel.setBackground(new java.awt.Color(138, 237, 237));
+        jpl_Cancel.setBackground(new java.awt.Color(157, 214, 238));
 
+        jbl_Cancel.setBackground(new java.awt.Color(157, 214, 238));
         jbl_Cancel.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
         jbl_Cancel.setForeground(new java.awt.Color(255, 255, 255));
         jbl_Cancel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -113,7 +120,7 @@ public class Contacto extends javax.swing.JFrame {
 
         jPanel1.add(jpl_Cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 410, -1, -1));
 
-        jPanel6.setBackground(new java.awt.Color(138, 237, 237));
+        jPanel6.setBackground(new java.awt.Color(157, 214, 238));
         jPanel6.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 jPanel6MouseDragged(evt);
@@ -159,9 +166,14 @@ public class Contacto extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel6MousePressed
 
     private void jbl_CancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbl_CancelMouseClicked
-
         this.setVisible(false);
     }//GEN-LAST:event_jbl_CancelMouseClicked
+
+    private void jbl_AceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbl_AceptarMouseClicked
+        Menu_Principal a = new Menu_Principal();
+        a.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jbl_AceptarMouseClicked
 
     /**
      * @param args the command line arguments

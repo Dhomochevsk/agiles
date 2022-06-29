@@ -21,41 +21,42 @@ public class Registro extends javax.swing.JFrame {
     int xmouse, ymouse;
     public Registro() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     public void limpiarTexto(JTextField llave, String identificador){
 
-        if((jtxt_Nombre.getText().equalsIgnoreCase("Ingresar Nombre") || jtxt_Nombre.getText().equalsIgnoreCase("")) & identificador.equalsIgnoreCase("A"))
+        if((jtxt_Nombre.getText().equalsIgnoreCase("Ingresar Nombre") || jtxt_Nombre.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("A"))
         {
         llave.setText("");
         llave.setForeground(Color.BLACK);
         }
-        if((jtxt_Apellido.getText().equalsIgnoreCase("Ingresar Apellido") || jtxt_Apellido.getText().equalsIgnoreCase("")) & identificador.equalsIgnoreCase("B"))
+        if((jtxt_Apellido.getText().equalsIgnoreCase("Ingresar Apellido") || jtxt_Apellido.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("B"))
         {
         llave.setText("");
         llave.setForeground(Color.BLACK);
         }
-        if((jtxt_Email.getText().equalsIgnoreCase("Ingresar email") || jtxt_Email.getText().equalsIgnoreCase("")) & identificador.equalsIgnoreCase("C"))
+        if((jtxt_Email.getText().equalsIgnoreCase("Ingresar email") || jtxt_Email.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("C"))
         {
         llave.setText("");
         llave.setForeground(Color.BLACK);
         }
-        if((jtxt_Telefono.getText().equalsIgnoreCase("Ingresar Telefono") || jtxt_Telefono.getText().equalsIgnoreCase("")) & identificador.equalsIgnoreCase("D"))
+        if((jtxt_Telefono.getText().equalsIgnoreCase("Ingresar Telefono") || jtxt_Telefono.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("D"))
         {
         llave.setText("");
         llave.setForeground(Color.BLACK);
         }
-        if((jtxt_Usuario.getText().equalsIgnoreCase("Ingresar Usuario") || jtxt_Usuario.getText().equalsIgnoreCase("")) & identificador.equalsIgnoreCase("E"))
+        if((jtxt_Usuario.getText().equalsIgnoreCase("Ingresar Usuario") || jtxt_Usuario.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("E"))
         {
         llave.setText("");
         llave.setForeground(Color.BLACK);
         }
-        if((jtxt_Pass.getText().equalsIgnoreCase("Ingresar Contraseña") || jtxt_Pass.getText().equalsIgnoreCase("")) & identificador.equalsIgnoreCase("F"))
+        if((jtxt_Pass.getText().equalsIgnoreCase("Ingresar Contraseña") || jtxt_Pass.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("F"))
         {
         llave.setText("");
         llave.setForeground(Color.BLACK);
         }
-        if((jtxt_ConfPass.getText().equalsIgnoreCase("Ingresar Contraseña") || jtxt_ConfPass.getText().equalsIgnoreCase("")) & identificador.equalsIgnoreCase("G"))
+        if((jtxt_ConfPass.getText().equalsIgnoreCase("Ingresar Contraseña") || jtxt_ConfPass.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("G"))
         {
         llave.setText("");
         llave.setForeground(Color.BLACK);
@@ -64,37 +65,37 @@ public class Registro extends javax.swing.JFrame {
     
     public void contenidoTexto(String exclusor)
     {
-        if(jtxt_Nombre.getText().equalsIgnoreCase("") & exclusor!="A")
+        if(jtxt_Nombre.getText().equalsIgnoreCase("") && exclusor!="A")
         {
         jtxt_Nombre.setText("Ingresar Nombre");
         jtxt_Nombre.setForeground(Color.LIGHT_GRAY);
         }
-        if(jtxt_Apellido.getText().equalsIgnoreCase("") & exclusor!="B")
+        if(jtxt_Apellido.getText().equalsIgnoreCase("") && exclusor!="B")
         {
         jtxt_Apellido.setText("Ingresar Apellido");
         jtxt_Apellido.setForeground(Color.LIGHT_GRAY);
         }
-        if(jtxt_Email.getText().equalsIgnoreCase("") & exclusor!="C")
+        if(jtxt_Email.getText().equalsIgnoreCase("") && exclusor!="C")
         {
         jtxt_Email.setText("Ingresar email");
         jtxt_Email.setForeground(Color.LIGHT_GRAY);
         }
-        if(jtxt_Telefono.getText().equalsIgnoreCase("") & exclusor!="D")
+        if(jtxt_Telefono.getText().equalsIgnoreCase("") && exclusor!="D")
         {
         jtxt_Telefono.setText("Ingresar Telefono");
         jtxt_Telefono.setForeground(Color.LIGHT_GRAY);
         }
-        if(jtxt_Usuario.getText().equalsIgnoreCase("") & exclusor!="E")
+        if(jtxt_Usuario.getText().equalsIgnoreCase("") && exclusor!="E")
         {
         jtxt_Usuario.setText("Ingresar Usuario");
         jtxt_Usuario.setForeground(Color.LIGHT_GRAY);
         }
-        if(jtxt_Pass.getText().equalsIgnoreCase("") & exclusor!="F")
+        if(jtxt_Pass.getText().equalsIgnoreCase("") && exclusor!="F")
         {
         jtxt_Pass.setText("Ingresar Contraseña");
         jtxt_Pass.setForeground(Color.LIGHT_GRAY);
         }
-        if(jtxt_ConfPass.getText().equalsIgnoreCase("") & exclusor!="G")
+        if(jtxt_ConfPass.getText().equalsIgnoreCase("") && exclusor!="G")
         {
         jtxt_ConfPass.setText("Ingresar Contraseña");
         jtxt_ConfPass.setForeground(Color.LIGHT_GRAY);
@@ -157,7 +158,7 @@ public class Registro extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 630, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -303,7 +304,7 @@ public class Registro extends javax.swing.JFrame {
         jLabel8.setText("Confirmar Constraseña:");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 240, 120, 30));
 
-        jPanel6.setBackground(new java.awt.Color(138, 237, 237));
+        jPanel6.setBackground(new java.awt.Color(157, 214, 238));
         jPanel6.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 jPanel6MouseDragged(evt);
@@ -445,8 +446,8 @@ public class Registro extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel6MousePressed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        Contacto acuerdo = new Contacto();
-        acuerdo.setVisible(true);
+        Contacto a = new Contacto();
+        a.setVisible(true);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jtxt_NombreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtxt_NombreMouseClicked

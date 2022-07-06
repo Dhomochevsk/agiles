@@ -21,83 +21,96 @@ public class Registro extends javax.swing.JFrame {
     int xmouse, ymouse;
     public Registro() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     public void limpiarTexto(JTextField llave, String identificador){
 
-        if((jtxt_Nombre.getText().equalsIgnoreCase("Ingresar Nombre") || jtxt_Nombre.getText().equalsIgnoreCase("")) & identificador.equalsIgnoreCase("A"))
+        if((jtxt_Nombre.getText().equalsIgnoreCase("Ingresar Nombre") || jtxt_Nombre.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("A"))
         {
         llave.setText("");
         llave.setForeground(Color.BLACK);
         }
-        if((jtxt_Apellido.getText().equalsIgnoreCase("Ingresar Apellido") || jtxt_Apellido.getText().equalsIgnoreCase("")) & identificador.equalsIgnoreCase("B"))
+        if((jtxt_Apellido.getText().equalsIgnoreCase("Ingresar Apellido") || jtxt_Apellido.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("B"))
+        {
+        llave.setText("");
+        llave.setForeground(Color.BLACK);
+        }   
+        if((jtxt_Email.getText().equalsIgnoreCase("Ingresar email") || jtxt_Email.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("C"))
         {
         llave.setText("");
         llave.setForeground(Color.BLACK);
         }
-        if((jtxt_Email.getText().equalsIgnoreCase("Ingresar email") || jtxt_Email.getText().equalsIgnoreCase("")) & identificador.equalsIgnoreCase("C"))
+        if((jtxt_Telefono.getText().equalsIgnoreCase("Ingresar Telefono") || jtxt_Telefono.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("D"))
         {
         llave.setText("");
         llave.setForeground(Color.BLACK);
         }
-        if((jtxt_Telefono.getText().equalsIgnoreCase("Ingresar Telefono") || jtxt_Telefono.getText().equalsIgnoreCase("")) & identificador.equalsIgnoreCase("D"))
+        if((jtxt_Usuario.getText().equalsIgnoreCase("Ingresar Usuario") || jtxt_Usuario.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("E"))
         {
         llave.setText("");
         llave.setForeground(Color.BLACK);
         }
-        if((jtxt_Usuario.getText().equalsIgnoreCase("Ingresar Usuario") || jtxt_Usuario.getText().equalsIgnoreCase("")) & identificador.equalsIgnoreCase("E"))
+        if((jtxt_Pass.getText().equalsIgnoreCase("Ingresar Contraseña") || jtxt_Pass.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("F"))
         {
         llave.setText("");
         llave.setForeground(Color.BLACK);
         }
-        if((jtxt_Pass.getText().equalsIgnoreCase("Ingresar Contraseña") || jtxt_Pass.getText().equalsIgnoreCase("")) & identificador.equalsIgnoreCase("F"))
+        if((jtxt_ConfPass.getText().equalsIgnoreCase("Ingresar Contraseña") || jtxt_ConfPass.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("G"))
         {
         llave.setText("");
         llave.setForeground(Color.BLACK);
         }
-        if((jtxt_ConfPass.getText().equalsIgnoreCase("Ingresar Contraseña") || jtxt_ConfPass.getText().equalsIgnoreCase("")) & identificador.equalsIgnoreCase("G"))
+         //////////////////////////////////       
+        if((jtxt_Cedula.getText().equalsIgnoreCase("Ingresar Cedula") || jtxt_Apellido.getText().equalsIgnoreCase("")) && identificador.equalsIgnoreCase("H"))
         {
         llave.setText("");
         llave.setForeground(Color.BLACK);
         }
+  ///////////////////////////////   
     }
     
     public void contenidoTexto(String exclusor)
     {
-        if(jtxt_Nombre.getText().equalsIgnoreCase("") & exclusor!="A")
+        if(jtxt_Nombre.getText().equalsIgnoreCase("") && exclusor!="A")
         {
         jtxt_Nombre.setText("Ingresar Nombre");
         jtxt_Nombre.setForeground(Color.LIGHT_GRAY);
         }
-        if(jtxt_Apellido.getText().equalsIgnoreCase("") & exclusor!="B")
+        if(jtxt_Apellido.getText().equalsIgnoreCase("") && exclusor!="B")
         {
         jtxt_Apellido.setText("Ingresar Apellido");
         jtxt_Apellido.setForeground(Color.LIGHT_GRAY);
         }
-        if(jtxt_Email.getText().equalsIgnoreCase("") & exclusor!="C")
+        if(jtxt_Email.getText().equalsIgnoreCase("") && exclusor!="C")
         {
         jtxt_Email.setText("Ingresar email");
         jtxt_Email.setForeground(Color.LIGHT_GRAY);
         }
-        if(jtxt_Telefono.getText().equalsIgnoreCase("") & exclusor!="D")
+        if(jtxt_Telefono.getText().equalsIgnoreCase("") && exclusor!="D")
         {
         jtxt_Telefono.setText("Ingresar Telefono");
         jtxt_Telefono.setForeground(Color.LIGHT_GRAY);
         }
-        if(jtxt_Usuario.getText().equalsIgnoreCase("") & exclusor!="E")
+        if(jtxt_Usuario.getText().equalsIgnoreCase("") && exclusor!="E")
         {
         jtxt_Usuario.setText("Ingresar Usuario");
         jtxt_Usuario.setForeground(Color.LIGHT_GRAY);
         }
-        if(jtxt_Pass.getText().equalsIgnoreCase("") & exclusor!="F")
+        if(jtxt_Pass.getText().equalsIgnoreCase("") && exclusor!="F")
         {
         jtxt_Pass.setText("Ingresar Contraseña");
         jtxt_Pass.setForeground(Color.LIGHT_GRAY);
         }
-        if(jtxt_ConfPass.getText().equalsIgnoreCase("") & exclusor!="G")
+        if(jtxt_ConfPass.getText().equalsIgnoreCase("") && exclusor!="G")
         {
         jtxt_ConfPass.setText("Ingresar Contraseña");
         jtxt_ConfPass.setForeground(Color.LIGHT_GRAY);
+        }
+        if(jtxt_Cedula.getText().equalsIgnoreCase("") && exclusor!="H")
+        {
+        jtxt_Cedula.setText("Ingresar Cedula");
+        jtxt_Cedula.setForeground(Color.LIGHT_GRAY);
         }
     }
     /**
@@ -141,6 +154,9 @@ public class Registro extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jSeparator6 = new javax.swing.JSeparator();
         jSeparator7 = new javax.swing.JSeparator();
+        jtxt_Cedula = new javax.swing.JTextField();
+        jSeparator9 = new javax.swing.JSeparator();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -157,7 +173,7 @@ public class Registro extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 630, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,7 +240,7 @@ public class Registro extends javax.swing.JFrame {
         jPanel1.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 220, 150, 10));
 
         jSeparator3.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, 150, 10));
+        jPanel1.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 170, 150, 10));
 
         jtxt_Email.setForeground(java.awt.Color.lightGray);
         jtxt_Email.setText("Ingresar email");
@@ -234,10 +250,10 @@ public class Registro extends javax.swing.JFrame {
                 jtxt_EmailMouseClicked(evt);
             }
         });
-        jPanel1.add(jtxt_Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, 150, 30));
+        jPanel1.add(jtxt_Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 140, 150, 30));
 
         jSeparator5.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 170, 150, 10));
+        jPanel1.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 220, 150, 10));
 
         jtxt_Telefono.setForeground(java.awt.Color.lightGray);
         jtxt_Telefono.setText("Ingresar Telefono");
@@ -257,7 +273,7 @@ public class Registro extends javax.swing.JFrame {
                 jtxt_UsuarioMouseClicked(evt);
             }
         });
-        jPanel1.add(jtxt_Usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 140, 150, 30));
+        jPanel1.add(jtxt_Usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 190, 150, 30));
 
         jtxt_Pass.setForeground(java.awt.Color.lightGray);
         jtxt_Pass.setText("Ingresar Contraseña");
@@ -267,10 +283,10 @@ public class Registro extends javax.swing.JFrame {
                 jtxt_PassMouseClicked(evt);
             }
         });
-        jPanel1.add(jtxt_Pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 190, 150, 30));
+        jPanel1.add(jtxt_Pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 240, 150, 30));
 
         jSeparator8.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 270, 150, 10));
+        jPanel1.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 320, 150, 10));
 
         jtxt_ConfPass.setForeground(java.awt.Color.lightGray);
         jtxt_ConfPass.setText("Ingresar Contraseña");
@@ -280,7 +296,7 @@ public class Registro extends javax.swing.JFrame {
                 jtxt_ConfPassMouseClicked(evt);
             }
         });
-        jPanel1.add(jtxt_ConfPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 240, 150, 30));
+        jPanel1.add(jtxt_ConfPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 290, 150, 30));
 
         jLabel2.setText("Nombre:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 120, 30));
@@ -289,21 +305,21 @@ public class Registro extends javax.swing.JFrame {
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 120, 30));
 
         jLabel4.setText("E-mail:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 120, 30));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, 120, 30));
 
         jLabel5.setText("Teléfono:");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 120, 30));
 
         jLabel6.setText("Usuario:");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, 120, 30));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 190, 120, 30));
 
         jLabel7.setText("Contraseña:");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 190, 120, 30));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 240, 120, 30));
 
         jLabel8.setText("Confirmar Constraseña:");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 240, 120, 30));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 290, 120, 30));
 
-        jPanel6.setBackground(new java.awt.Color(138, 237, 237));
+        jPanel6.setBackground(new java.awt.Color(157, 214, 238));
         jPanel6.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 jPanel6MouseDragged(evt);
@@ -397,7 +413,28 @@ public class Registro extends javax.swing.JFrame {
         jPanel1.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 320, 150, 10));
 
         jSeparator7.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 220, 150, 10));
+        jPanel1.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 270, 150, 10));
+
+        jtxt_Cedula.setForeground(java.awt.Color.lightGray);
+        jtxt_Cedula.setText("Ingresar Cedula");
+        jtxt_Cedula.setBorder(null);
+        jtxt_Cedula.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtxt_CedulaMouseClicked(evt);
+            }
+        });
+        jtxt_Cedula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtxt_CedulaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jtxt_Cedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, 150, 30));
+
+        jSeparator9.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(jSeparator9, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, 150, 10));
+
+        jLabel10.setText("Cedula:");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 120, 30));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 440));
 
@@ -445,8 +482,8 @@ public class Registro extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel6MousePressed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        Contacto acuerdo = new Contacto();
-        acuerdo.setVisible(true);
+        Contacto a = new Contacto(jtxt_Cedula.getText(),jtxt_Nombre.getText(),jtxt_Apellido.getText(),jtxt_Email.getText(),jtxt_Telefono.getText(),jtxt_Usuario.getText(),jtxt_ConfPass.getText());
+        a.setVisible(true);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jtxt_NombreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtxt_NombreMouseClicked
@@ -483,6 +520,15 @@ public class Registro extends javax.swing.JFrame {
         limpiarTexto(jtxt_ConfPass,"G");
         contenidoTexto("G");
     }//GEN-LAST:event_jtxt_ConfPassMouseClicked
+
+    private void jtxt_CedulaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtxt_CedulaMouseClicked
+        limpiarTexto(jtxt_Cedula,"H");
+        contenidoTexto("H");
+    }//GEN-LAST:event_jtxt_CedulaMouseClicked
+
+    private void jtxt_CedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxt_CedulaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtxt_CedulaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -521,6 +567,7 @@ public class Registro extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -541,11 +588,13 @@ public class Registro extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JSeparator jSeparator9;
     private javax.swing.JLabel jbl_exit;
     private javax.swing.JLabel jbl_minus;
     private javax.swing.JPanel jpl_exit;
     private javax.swing.JPanel jpl_minus;
     private javax.swing.JTextField jtxt_Apellido;
+    private javax.swing.JTextField jtxt_Cedula;
     private javax.swing.JTextField jtxt_ConfPass;
     private javax.swing.JTextField jtxt_Email;
     private javax.swing.JTextField jtxt_Nombre;

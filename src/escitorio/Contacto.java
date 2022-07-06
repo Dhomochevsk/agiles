@@ -218,6 +218,7 @@ public class Contacto extends javax.swing.JFrame {
         Menu_Principal a = new Menu_Principal(c_usu);
         a.setVisible(true);
         this.setVisible(false);
+        
     }//GEN-LAST:event_jbl_AceptarMouseClicked
 
     /**

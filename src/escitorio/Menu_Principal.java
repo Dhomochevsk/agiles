@@ -168,10 +168,6 @@ public class Menu_Principal extends javax.swing.JFrame {
         lblImagenHist = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         lblImagenGuard = new javax.swing.JLabel();
-        jtxt_UserEmpleado = new javax.swing.JTextField();
-        jtxt_Descripcion = new javax.swing.JTextField();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(630, 440));
@@ -370,9 +366,9 @@ public class Menu_Principal extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jtbl_Contactos);
 
-        bgContacG.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 290, 220));
+        bgContacG.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 290, 370));
 
-        bg.add(bgContacG, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 260, 290, 220));
+        bg.add(bgContacG, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 260, 290, 370));
 
         jpNuevaContra.setBackground(new java.awt.Color(125, 140, 125));
         jpNuevaContra.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -445,58 +441,6 @@ public class Menu_Principal extends javax.swing.JFrame {
         lblImagenGuard.setBackground(new java.awt.Color(102, 255, 255));
         bg.add(lblImagenGuard, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 150, 90, 90));
 
-        jtxt_UserEmpleado.setForeground(new java.awt.Color(204, 204, 204));
-        jtxt_UserEmpleado.setText("Cedula Empleado");
-        jtxt_UserEmpleado.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jtxt_UserEmpleadoMousePressed(evt);
-            }
-        });
-        jtxt_UserEmpleado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtxt_UserEmpleadoActionPerformed(evt);
-            }
-        });
-        bg.add(jtxt_UserEmpleado, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 510, 290, 30));
-
-        jtxt_Descripcion.setForeground(new java.awt.Color(204, 204, 204));
-        jtxt_Descripcion.setText("Descrpcion");
-        jtxt_Descripcion.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jtxt_DescripcionMousePressed(evt);
-            }
-        });
-        jtxt_Descripcion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtxt_DescripcionActionPerformed(evt);
-            }
-        });
-        bg.add(jtxt_Descripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 550, 290, 30));
-
-        jPanel1.setBackground(new java.awt.Color(0, 153, 153));
-        jPanel1.setForeground(new java.awt.Color(0, 255, 255));
-
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("GUARDAR CONTACTO");
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-        );
-
-        bg.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 590, 290, 40));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -547,65 +491,6 @@ public class Menu_Principal extends javax.swing.JFrame {
         a.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jpNuevaContraMouseClicked
-
-    private void jtxt_UserEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxt_UserEmpleadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtxt_UserEmpleadoActionPerformed
-
-    private void jtxt_DescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxt_DescripcionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtxt_DescripcionActionPerformed
-
-    private void jtxt_UserEmpleadoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtxt_UserEmpleadoMousePressed
-        if(jtxt_UserEmpleado.getText().equalsIgnoreCase("Cedula Empleado") || jtxt_UserEmpleado.getText().equalsIgnoreCase(""))
-        {
-        jtxt_UserEmpleado.setText("");
-        jtxt_UserEmpleado.setForeground(Color.BLACK);
-        }
-        if(jtxt_Descripcion.getText().equalsIgnoreCase(""))
-        {
-        jtxt_Descripcion.setText("Descrpcion");
-        jtxt_Descripcion.setForeground(Color.LIGHT_GRAY);
-        }
-    }//GEN-LAST:event_jtxt_UserEmpleadoMousePressed
-
-    private void jtxt_DescripcionMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtxt_DescripcionMousePressed
-        if(jtxt_Descripcion.getText().equalsIgnoreCase("Descrpcion") || jtxt_Descripcion.getText().equalsIgnoreCase(""))
-        {
-        jtxt_Descripcion.setText("");
-        jtxt_Descripcion.setForeground(Color.BLACK);
-        }
-        if(jtxt_UserEmpleado.getText().equalsIgnoreCase(""))
-        {
-        jtxt_UserEmpleado.setText("Cedula Empleado");
-        jtxt_UserEmpleado.setForeground(Color.LIGHT_GRAY);
-        }
-    }//GEN-LAST:event_jtxt_DescripcionMousePressed
-
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        try {
-            Conexion cc=new Conexion();
-            Connection cn = cc.conexion();
-            String sql="";
-            sql="INSERT INTO CONTACTOS VALUES(ID_CONT,CED_EMP_CONT,USE_CLI_CONT,DES_CONT) values(?,?,?,?)";
-            PreparedStatement psd = cn.prepareStatement(sql);
-            //psd.setInt(1, Menu_Principal.this.ultimoContacto()+1);
-            psd.setInt(1, Menu_Principal.this.ultimoContacto());
-            psd.setString(2, jtxt_UserEmpleado.getText());
-            psd.setString(3, user);
-            psd.setString(4, jtxt_Descripcion.getText());
-
-            int n =psd.executeUpdate();
-            if(n>0)
-            {
-                this.dispose();
-                JOptionPane.showMessageDialog(null, "Se inserto correctamente");
-            }
-           
-        } catch (SQLException ex) {
-           JOptionPane.showMessageDialog(null, ex);
-        }
-    }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         cargarTabla();
@@ -677,9 +562,7 @@ public class Menu_Principal extends javax.swing.JFrame {
     private javax.swing.JPanel btnMinim;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
@@ -689,8 +572,6 @@ public class Menu_Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jpNuevaContra;
     private javax.swing.JTable jtbl_Contactos;
     private javax.swing.JTable jtbl_ContratosRecientes;
-    private javax.swing.JTextField jtxt_Descripcion;
-    private javax.swing.JTextField jtxt_UserEmpleado;
     private javax.swing.JLabel lblImagenContrac;
     private javax.swing.JLabel lblImagenGuard;
     private javax.swing.JLabel lblImagenHist;

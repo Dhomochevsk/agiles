@@ -484,6 +484,7 @@ public class Registro extends javax.swing.JFrame {
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         Contacto a = new Contacto(jtxt_Cedula.getText(),jtxt_Nombre.getText(),jtxt_Apellido.getText(),jtxt_Email.getText(),jtxt_Telefono.getText(),jtxt_Usuario.getText(),jtxt_ConfPass.getText());
         a.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jtxt_NombreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtxt_NombreMouseClicked

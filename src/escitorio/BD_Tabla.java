@@ -20,6 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -33,7 +34,6 @@ public class BD_Tabla extends javax.swing.JFrame {
     private ImageIcon imagen;
     private Icon icono;
     private DefaultTableModel tblModel;
-    String[] columnas = {"Nombre","Profesion","Cant. Contratos","Calificacion","Informacion Academica","Reseñas"," "};
     String user;
     
     public BD_Tabla(String usuario) {
@@ -45,40 +45,31 @@ public class BD_Tabla extends javax.swing.JFrame {
         
     }
     
-    
-    public void cargar(){
-        String[] columnas = {"Nombre","Profesion","Cant. Contratos","Calificacion"};
-        String[] registros = new String[40];
-        
-        String sql = "SELECT * FROM empleados";
-        tblModel = new DefaultTableModel(null, columnas);
-        Conexion cc = new Conexion();
-        Connection cn = cc.conexion();
-        
-        try {
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while(rs.next()){
-                registros[0] = rs.getString("nom_emp");
-                registros[1] = rs.getString("prof_emp");
-                registros[2] = rs.getString("cant_contratos");
-                registros[3] = rs.getString("calif_emp"); 
-                tblModel.addRow(registros);
+    public void diseno(){
+        String[] columnas = {"Nombre","Profesion","Cant. Contratos","Calificacion","Informacion Academica","Resenas"," "};
+        tblModel = new DefaultTableModel(null,columnas){
+            public boolean isCellEditable(int row, int column){
+                return false;
             }
-            
-            this.jtblEmpleadosBD.setModel(tblModel);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }  
+        };
+        this.jtblEmpleadosBD.setModel(tblModel);
+        this.jtblEmpleadosBD.setRowHeight(40);
     }
     
-    public void buscar(){
-        String[] columnas = {"Nombre","Profesion","Cant. Contratos","Calificacion","Informacion Academica"};
+    
+    public void cargar(){
+        this.diseno();
         Object[] registros = new Object[40];
-        String sql = "SELECT * FROM empleados WHERE prof_emp = '"+this.jcbProfesion.getSelectedItem().toString()+"'";
-        tblModel = new DefaultTableModel(null, columnas);
+        String sql = "SELECT * FROM empleados";
+        JButton btnInfoAcad = new JButton("...");
+        btnInfoAcad.setName("infoA");
+        JButton btnResenas = new JButton("...");
+        btnResenas.setName("Resena");
+        JButton btnContacto = new JButton("Contacto");
+        btnContacto.setName("Contacto");
         Conexion cc = new Conexion();
         Connection cn = cc.conexion();
+        this.jtblEmpleadosBD.setDefaultRenderer(Object.class, new RenderTable());
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -87,13 +78,47 @@ public class BD_Tabla extends javax.swing.JFrame {
                 registros[1] = rs.getString("prof_emp");
                 registros[2] = rs.getString("cant_contratos");
                 registros[3] = rs.getString("calif_emp");
-                registros[4] = new JButton("...");
+                registros[4] = btnInfoAcad;
+                registros[5] = btnResenas;
+                registros[6] = btnContacto;
                 tblModel.addRow(registros);
             }
-            this.jtblEmpleadosBD.setDefaultRenderer(Object.class, new RenderTable());
+            
             this.jtblEmpleadosBD.setModel(tblModel);
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }  
+    }
+    
+    public void buscar(){
+        this.diseno();
+        Object[] registros = new Object[40];
+        String sql = "SELECT * FROM empleados WHERE prof_emp = '"+this.jcbProfesion.getSelectedItem().toString()+"'";
+        JButton btnInfoAcad = new JButton("...");
+        btnInfoAcad.setName("infoA");
+        JButton btnResenas = new JButton("...");
+        btnResenas.setName("Resena");
+        JButton btnContacto = new JButton("Contacto");
+        btnContacto.setName("Contacto");
+        Conexion cc = new Conexion();
+        Connection cn = cc.conexion();
+        this.jtblEmpleadosBD.setDefaultRenderer(Object.class, new RenderTable());
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                registros[0] = rs.getString("nom_emp");
+                registros[1] = rs.getString("prof_emp");
+                registros[2] = rs.getString("cant_contratos");
+                registros[3] = rs.getString("calif_emp");
+                registros[4] = btnInfoAcad;
+                registros[5] = btnResenas;
+                registros[6] = btnContacto;
+                tblModel.addRow(registros);
+            }
+            this.jtblEmpleadosBD.setModel(tblModel);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
         }
            
     }
@@ -257,9 +282,14 @@ public class BD_Tabla extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jtblEmpleadosBD.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtblEmpleadosBDMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtblEmpleadosBD);
 
-        bg.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 280, 1000, 470));
+        bg.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 1000, 470));
 
         jbtnBuscar.setText("Buscar");
         jbtnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -327,26 +357,8 @@ public class BD_Tabla extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCerrarMouseExited
 
     private void jbtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBuscarActionPerformed
-        String[] columnas = {"Nombre","Profesion","Cant. Contratos","Calificacion"};
-        String[] registros = new String[40];
-        String sql = "SELECT * FROM empleados WHERE prof_emp = '"+this.jcbProfesion.getSelectedItem().toString()+"'";
-        tblModel = new DefaultTableModel(null, columnas);
-        Conexion cc = new Conexion();
-        Connection cn = cc.conexion();
-        try {
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while(rs.next()){
-                registros[0] = rs.getString("nom_emp");
-                registros[1] = rs.getString("prof_emp");
-                registros[2] = rs.getString("cant_contratos");
-                registros[3] = rs.getString("calif_emp"); 
-                tblModel.addRow(registros);
-            }
-            this.jtblEmpleadosBD.setModel(tblModel);
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-        }
+
+        this.buscar();
     }//GEN-LAST:event_jbtnBuscarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -354,6 +366,29 @@ public class BD_Tabla extends javax.swing.JFrame {
         a.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jtblEmpleadosBDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblEmpleadosBDMouseClicked
+        int column = this.jtblEmpleadosBD.getColumnModel().getColumnIndexAtX(evt.getX());
+        int row = evt.getY()/this.jtblEmpleadosBD.getRowHeight();
+        
+        if(row < this.jtblEmpleadosBD.getRowCount() && row >= 0 && column < this.jtblEmpleadosBD.getColumnCount() && column >= 0){
+            Object value = this.jtblEmpleadosBD.getValueAt(row, column);
+            if(value instanceof JButton){
+                ((JButton)value).doClick();
+                JButton boton = (JButton) value;
+
+                if(boton.getName().equals("infoA"))
+                    JOptionPane.showMessageDialog(null, "No existen registros por el momento");
+                
+                if(boton.getName().equals("Resena"))
+                    JOptionPane.showMessageDialog(null, "No existen resenas de este usuario");
+                
+                if(boton.getName().equals("Contacto"))
+                    JOptionPane.showMessageDialog(null, "El contacto no se encuentra habilitado");
+                
+            }
+        }
+    }//GEN-LAST:event_jtblEmpleadosBDMouseClicked
 
     /**
      * @param args the command line arguments

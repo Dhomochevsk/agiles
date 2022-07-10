@@ -20,7 +20,17 @@ public class Conexion {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             //con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/base_agil","root","");
-            con = (Connection) DriverManager.getConnection("jdbc:mysql://sql10.freemysqlhosting.net/sql10503397","sql10503397","bfNbMT86ph");
+            con = (Connection) DriverManager.getConnection("jdbc:mysql://sql304.byetcluster.com/epiz_32140834_proyAgil","epiz_32140834","vLmK3TeqBnPok");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return con;
+    }
+    
+    public Connection localhost(String bd){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = (Connection) DriverManager.getConnection("jdbc:mysql://127.0.0.1/"+bd,"root","");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }

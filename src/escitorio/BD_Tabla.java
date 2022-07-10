@@ -68,7 +68,7 @@ public class BD_Tabla extends javax.swing.JFrame {
         JButton btnContacto = new JButton("Contacto");
         btnContacto.setName("Contacto");
         Conexion cc = new Conexion();
-        Connection cn = cc.conexion();
+        Connection cn = cc.localhost("empleados");
         this.jtblEmpleadosBD.setDefaultRenderer(Object.class, new RenderTable());
         try {
             Statement st = cn.createStatement();
@@ -311,10 +311,7 @@ public class BD_Tabla extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(bg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -24,6 +24,9 @@ import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import escitorio.Info_Prof;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JFrame;
 /**
  *
@@ -45,7 +48,7 @@ public class BD_Tabla extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.pintarImagen(this.lblImagenLogo, "src/imagenes/Logo Aplicacion.png");
         this.cargar();
-        
+        //this.buscar();
     }
 
     BD_Tabla() {
@@ -53,7 +56,7 @@ public class BD_Tabla extends javax.swing.JFrame {
     }
     
     public void diseno(){
-        String[] columnas = {"Nombre","Profesion","Cant. Contratos","Calificacion","Informacion Academica","Resenas"," "};
+        String[] columnas = {"Cedula","Nombre","Edad","Profesion","Cant. Contratos","Calificacion","Informacion Academica","Resenas"," "};
         tblModel = new DefaultTableModel(null,columnas){
             public boolean isCellEditable(int row, int column){
                 return false;
@@ -67,6 +70,7 @@ public class BD_Tabla extends javax.swing.JFrame {
         this.diseno();
         Object[] registros = new Object[40];
         String sql = "SELECT * FROM empleados";
+        String sql2 = "SELECT NOM_HAB FROM habilidades WHERE ID_HAB IN(SELECT ID_HAB FROM emp_habil WHERE CED_EMP=";
         JButton btnInfoAcad = new JButton("...");
         btnInfoAcad.setName("infoA");
         JButton btnResenas = new JButton("...");
@@ -74,19 +78,30 @@ public class BD_Tabla extends javax.swing.JFrame {
         JButton btnContacto = new JButton("Contacto");
         btnContacto.setName("Contacto");
         Conexion cc = new Conexion();
-        Connection cn = cc.localhost("empleados");
+        Connection cn = cc.localhost("proy_agiles");
         this.jtblEmpleadosBD.setDefaultRenderer(Object.class, new RenderTable());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fechaNac = null;
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
+            
             while(rs.next()){
-                registros[0] = rs.getString("nom_emp");
-                registros[1] = rs.getString("prof_emp");
-                registros[2] = rs.getString("cant_contratos");
-                registros[3] = rs.getString("calif_emp");
-                registros[4] = btnInfoAcad;
-                registros[5] = btnResenas;
-                registros[6] = btnContacto;
+                registros[0] = rs.getString("CED_EMP");
+                registros[1] = rs.getString("NOM_EMP") +" "+rs.getString("APE_EMP");
+                fechaNac = LocalDate.parse(rs.getString("FEC_NAC_EMP"), formatter);
+                Period edad = Period.between(fechaNac, LocalDate.now());
+                registros[2] = String.valueOf(edad.getYears());
+                Statement st2 = cn.createStatement();
+                ResultSet rs2 = st2.executeQuery(sql2+registros[0]+")");
+                while(rs2.next()){
+                registros[3] = rs2.getString("NOM_HAB");
+                }
+                registros[4] = "0";
+                registros[5] = "0";
+                registros[6] = btnInfoAcad;
+                registros[7] = btnResenas;
+                registros[8] = btnContacto;
                 tblModel.addRow(registros);
             }
             
@@ -99,7 +114,8 @@ public class BD_Tabla extends javax.swing.JFrame {
     public void buscar(){
         this.diseno();
         Object[] registros = new Object[40];
-        String sql = "SELECT * FROM empleados WHERE prof_emp = '"+this.jcbProfesion.getSelectedItem().toString()+"'";
+        String sql = "SELECT * FROM empleados WHERE ced_emp IN (SELECT CED_EMP FROM emp_habil WHERE id_hab IN (SELECT id_hab FROM habilidades WHERE nom_hab='"+this.jcbProfesion.getSelectedItem().toString()+"'))";
+        String sql2 = "SELECT NOM_HAB FROM habilidades WHERE ID_HAB IN(SELECT ID_HAB FROM emp_habil WHERE CED_EMP=";
         JButton btnInfoAcad = new JButton("...");
         btnInfoAcad.setName("infoA");
         JButton btnResenas = new JButton("...");
@@ -107,19 +123,29 @@ public class BD_Tabla extends javax.swing.JFrame {
         JButton btnContacto = new JButton("Contacto");
         btnContacto.setName("Contacto");
         Conexion cc = new Conexion();
-        Connection cn = cc.conexion();
+        Connection cn = cc.localhost("proy_agiles");
         this.jtblEmpleadosBD.setDefaultRenderer(Object.class, new RenderTable());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fechaNac = null;
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while(rs.next()){
-                registros[0] = rs.getString("nom_emp");
-                registros[1] = rs.getString("prof_emp");
-                registros[2] = rs.getString("cant_contratos");
-                registros[3] = rs.getString("calif_emp");
-                registros[4] = btnInfoAcad;
-                registros[5] = btnResenas;
-                registros[6] = btnContacto;
+                registros[0] = rs.getString("CED_EMP");
+                registros[1] = rs.getString("NOM_EMP") +" "+rs.getString("APE_EMP");
+                fechaNac = LocalDate.parse(rs.getString("FEC_NAC_EMP"), formatter);
+                Period edad = Period.between(fechaNac, LocalDate.now());
+                registros[2] = String.valueOf(edad.getYears());
+                Statement st2 = cn.createStatement();
+                ResultSet rs2 = st2.executeQuery(sql2+registros[0]+")");
+                while(rs2.next()){
+                registros[3] = rs2.getString("NOM_HAB");
+                }
+                registros[4] = "0";
+                registros[5] = "0";
+                registros[6] = btnInfoAcad;
+                registros[7] = btnResenas;
+                registros[8] = btnContacto;
                 tblModel.addRow(registros);
             }
             this.jtblEmpleadosBD.setModel(tblModel);

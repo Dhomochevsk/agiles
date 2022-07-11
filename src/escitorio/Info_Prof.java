@@ -47,6 +47,7 @@ public class Info_Prof extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.pintarImagen(this.lblimgInfo_Prof, "src/imagenes/profesion_icono.png");
         this.cargarBDexperiencia_laboral();
+        this.cargarBDempleados();
     }
 
     /**
@@ -352,9 +353,9 @@ public class Info_Prof extends javax.swing.JFrame {
     public void cargarBDexperiencia_laboral(){
         this.disenoBase();
         Object[] registros = new Object[40];
-        frame = new BD_Tabla();
-        TableModel modelo = frame.getJtblEmpleadosBD().getModel();
-        String id = (String) modelo.getValueAt(frame.getJtblEmpleadosBD().getSelectedRow(), 0);
+//        frame = new BD_Tabla();
+//        TableModel modelo = frame.getJtblEmpleadosBD().getModel();
+//        String id = (String) modelo.getValueAt(frame.getJtblEmpleadosBD().getSelectedRow(), 0);
         String sql = "SELECT * FROM experiencia_laboral WHERE CED_EMP_EXP=1802346793";
         Conexion cc = new Conexion();
         Connection cn = cc.localhost("proy_agiles");
@@ -377,13 +378,12 @@ public class Info_Prof extends javax.swing.JFrame {
     }
     
     public void cargarBDempleados(){
-        this.disenoBase();
-        TableModel modelo = frame.getJtblEmpleadosBD().getModel();
-        String id = (String) modelo.getValueAt(frame.getJtblEmpleadosBD().getSelectedRow(), 0);
-        String sql = "SELECT * FROM empleados WHERE CED_EMP="+id;
+//        TableModel modelo = frame.getJtblEmpleadosBD().getModel();
+//        String id = (String) modelo.getValueAt(frame.getJtblEmpleadosBD().getSelectedRow(), 0);
+        String sql = "SELECT * FROM empleados WHERE CED_EMP=1802346793";
         Conexion cc = new Conexion();
         Connection cn = cc.localhost("proy_agiles");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fechaNac = null;
         try {
             Statement st = cn.createStatement();
@@ -397,7 +397,6 @@ public class Info_Prof extends javax.swing.JFrame {
                 this.lblEstudios.setText(rs.getString("ESTU_EMP"));      
             }
             this.lblAreasOficio.setText("Ninguno");
-            this.tblTablaExperiencia.setModel(tblModel);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }

@@ -20,9 +20,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
-
+import escitorio.Info_Prof;
+import javax.swing.JFrame;
 /**
  *
  * @author USUARIO
@@ -35,6 +37,7 @@ public class BD_Tabla extends javax.swing.JFrame {
     private Icon icono;
     private DefaultTableModel tblModel;
     String user;
+    private Info_Prof frame;
     
     public BD_Tabla(String usuario) {
         initComponents();
@@ -43,6 +46,10 @@ public class BD_Tabla extends javax.swing.JFrame {
         this.pintarImagen(this.lblImagenLogo, "src/imagenes/Logo Aplicacion.png");
         this.cargar();
         
+    }
+
+    BD_Tabla() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
     public void diseno(){
@@ -55,7 +62,6 @@ public class BD_Tabla extends javax.swing.JFrame {
         this.jtblEmpleadosBD.setModel(tblModel);
         this.jtblEmpleadosBD.setRowHeight(40);
     }
-    
     
     public void cargar(){
         this.diseno();
@@ -367,7 +373,7 @@ public class BD_Tabla extends javax.swing.JFrame {
     private void jtblEmpleadosBDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblEmpleadosBDMouseClicked
         int column = this.jtblEmpleadosBD.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY()/this.jtblEmpleadosBD.getRowHeight();
-        
+        this.frame = new Info_Prof();
         if(row < this.jtblEmpleadosBD.getRowCount() && row >= 0 && column < this.jtblEmpleadosBD.getColumnCount() && column >= 0){
             Object value = this.jtblEmpleadosBD.getValueAt(row, column);
             if(value instanceof JButton){
@@ -375,7 +381,7 @@ public class BD_Tabla extends javax.swing.JFrame {
                 JButton boton = (JButton) value;
 
                 if(boton.getName().equals("infoA"))
-                    JOptionPane.showMessageDialog(null, "No existen registros por el momento");
+                    frame.setVisible(true);
                 
                 if(boton.getName().equals("Resena"))
                     JOptionPane.showMessageDialog(null, "No existen resenas de este usuario");
@@ -432,6 +438,16 @@ public class BD_Tabla extends javax.swing.JFrame {
         lbl.setIcon(this.icono);
         this.repaint();
     }
+
+    public JTable getJtblEmpleadosBD() {
+        return jtblEmpleadosBD;
+    }
+
+    public void setJtblEmpleadosBD(JTable jtblEmpleadosBD) {
+        this.jtblEmpleadosBD = jtblEmpleadosBD;
+    }
+    
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

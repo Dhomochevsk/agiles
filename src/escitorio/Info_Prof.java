@@ -7,9 +7,26 @@ package escitorio;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import escitorio.BD_Tabla;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import javax.swing.JFrame;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -21,11 +38,15 @@ public class Info_Prof extends javax.swing.JFrame {
     int yMouse;
     private ImageIcon imagen;
     private Icon icono;
+    private DefaultTableModel tblModel;
+    private TableColumn tblColumnas;
+    private BD_Tabla frame;
     
     public Info_Prof() {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.pintarImagen(this.lblImagenLogo, "src/imagenes/profesion_icono.png");
+        this.pintarImagen(this.lblimgInfo_Prof, "src/imagenes/profesion_icono.png");
+        this.cargarBDexperiencia_laboral();
     }
 
     /**
@@ -38,30 +59,30 @@ public class Info_Prof extends javax.swing.JFrame {
     private void initComponents() {
 
         jpEncabezado = new javax.swing.JPanel();
-        BookWork = new javax.swing.JLabel();
-        lblImagenLogo = new javax.swing.JLabel();
+        Info_Profesional = new javax.swing.JLabel();
+        lblimgInfo_Prof = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        lblBoldNombre = new javax.swing.JLabel();
+        lblBoldNacionalidad = new javax.swing.JLabel();
+        lblBoldEdad = new javax.swing.JLabel();
+        lblBoldTelefono = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        lblNacionalidad = new javax.swing.JLabel();
+        lblTelefono = new javax.swing.JLabel();
+        lblEdad = new javax.swing.JLabel();
+        lblimgFoto = new javax.swing.JLabel();
+        CI = new javax.swing.JLabel();
+        lblCedula = new javax.swing.JLabel();
+        jpMedium = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel17 = new javax.swing.JLabel();
+        lblBoldAreasOficio = new javax.swing.JLabel();
+        lblBoldEstudios = new javax.swing.JLabel();
+        lblEstudios = new javax.swing.JLabel();
+        lblAreasOficio = new javax.swing.JLabel();
+        jpMedium2 = new javax.swing.JPanel();
+        Experiencia_Profesional = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblTablaExperiencia = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -78,10 +99,10 @@ public class Info_Prof extends javax.swing.JFrame {
             }
         });
 
-        BookWork.setFont(new java.awt.Font("Calibri", 1, 35)); // NOI18N
-        BookWork.setText("Info. Profesional");
+        Info_Profesional.setFont(new java.awt.Font("Calibri", 1, 35)); // NOI18N
+        Info_Profesional.setText("Info. Profesional");
 
-        lblImagenLogo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblimgInfo_Prof.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout jpEncabezadoLayout = new javax.swing.GroupLayout(jpEncabezado);
         jpEncabezado.setLayout(jpEncabezadoLayout);
@@ -89,9 +110,9 @@ public class Info_Prof extends javax.swing.JFrame {
             jpEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpEncabezadoLayout.createSequentialGroup()
                 .addContainerGap(129, Short.MAX_VALUE)
-                .addComponent(BookWork)
+                .addComponent(Info_Profesional)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblImagenLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblimgInfo_Prof, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(101, 101, 101))
         );
         jpEncabezadoLayout.setVerticalGroup(
@@ -100,57 +121,56 @@ public class Info_Prof extends javax.swing.JFrame {
                 .addGroup(jpEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpEncabezadoLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(lblImagenLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblimgInfo_Prof, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jpEncabezadoLayout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addComponent(BookWork, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(Info_Profesional, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Nombre");
-        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblBoldNombre.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        lblBoldNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblBoldNombre.setText("Nombre");
+        lblBoldNombre.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Nacionalidad");
-        jLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblBoldNacionalidad.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        lblBoldNacionalidad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblBoldNacionalidad.setText("Nacionalidad");
+        lblBoldNacionalidad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Edad");
-        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblBoldEdad.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        lblBoldEdad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblBoldEdad.setText("Edad");
+        lblBoldEdad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Telefono");
-        jLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblBoldTelefono.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        lblBoldTelefono.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblBoldTelefono.setText("Telefono");
+        lblBoldTelefono.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel7.setText("Jose Pérez");
-        jLabel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblNombre.setText("Jose Pérez");
+        lblNombre.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel8.setText("Ecuatoriano");
-        jLabel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblNacionalidad.setText("Ecuatoriano");
+        lblNacionalidad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel9.setText("0963458627");
-        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblTelefono.setText("0963458627");
+        lblTelefono.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel10.setText("18 Años");
-        jLabel10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblEdad.setText("18 Años");
+        lblEdad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("jLabel2");
-        jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblimgFoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblimgFoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel12.setText("C.I");
-        jLabel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        CI.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        CI.setText("C.I");
+        CI.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel3.setText("1850596287");
-        jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblCedula.setText("1850596287");
+        lblCedula.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -159,23 +179,23 @@ public class Info_Prof extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblimgFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel12)
+                        .addComponent(CI)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3)))
+                        .addComponent(lblCedula)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblBoldNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBoldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBoldEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBoldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                    .addComponent(lblEdad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblNacionalidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -183,61 +203,61 @@ public class Info_Prof extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel7))
+                    .addComponent(lblBoldNombre)
+                    .addComponent(lblNombre))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel8))
+                    .addComponent(lblBoldNacionalidad)
+                    .addComponent(lblNacionalidad))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel10))
+                    .addComponent(lblBoldEdad)
+                    .addComponent(lblEdad))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel9))
+                    .addComponent(lblBoldTelefono)
+                    .addComponent(lblTelefono))
                 .addGap(14, 14, 14))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel3))
+                    .addComponent(CI)
+                    .addComponent(lblCedula))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblimgFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jPanel2.setBackground(new java.awt.Color(157, 214, 238));
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jpMedium.setBackground(new java.awt.Color(157, 214, 238));
+        jpMedium.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel11.setText("INFORMACIÓN ACADÉMICA/PROFESIONAL");
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 0, -1, -1));
+        jpMedium.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 0, -1, -1));
 
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("Otras Áreas de Oficio:");
-        jLabel13.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblBoldAreasOficio.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        lblBoldAreasOficio.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblBoldAreasOficio.setText("Otras Áreas de Oficio:");
+        lblBoldAreasOficio.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("Estudios");
-        jLabel14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblBoldEstudios.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        lblBoldEstudios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblBoldEstudios.setText("Estudios");
+        lblBoldEstudios.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel15.setText("Primaria");
-        jLabel15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblEstudios.setText("Primaria");
+        lblEstudios.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel16.setText("Electricista, Carpintero, Albañil");
-        jLabel16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblAreasOficio.setText("Electricista, Carpintero, Albañil");
+        lblAreasOficio.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jPanel3.setBackground(new java.awt.Color(157, 214, 238));
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jpMedium2.setBackground(new java.awt.Color(157, 214, 238));
+        jpMedium2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel17.setText("EXPERIENCIA PROFESIONAL");
-        jPanel3.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, -1, -1));
+        Experiencia_Profesional.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        Experiencia_Profesional.setText("EXPERIENCIA PROFESIONAL");
+        jpMedium2.add(Experiencia_Profesional, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, -1, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblTablaExperiencia.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -248,7 +268,7 @@ public class Info_Prof extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblTablaExperiencia);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -263,27 +283,25 @@ public class Info_Prof extends javax.swing.JFrame {
                                 .addGap(0, 1, Short.MAX_VALUE)
                                 .addComponent(jpEncabezado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jpMedium, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(79, 79, 79)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblBoldAreasOficio, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(lblAreasOficio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblBoldEstudios, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblEstudios, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(190, 190, 190))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jpMedium2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,25 +311,101 @@ public class Info_Prof extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jpMedium, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15)
-                    .addComponent(jLabel14))
+                    .addComponent(lblEstudios)
+                    .addComponent(lblBoldEstudios))
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(jLabel16))
+                    .addComponent(lblBoldAreasOficio)
+                    .addComponent(lblAreasOficio))
                 .addGap(18, 18, 18)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jpMedium2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(158, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    //TABLA
+    public void disenoBase(){
+        String[] columnas = {"Empleador","Cargo","Contacto","Referencia","Tiempo"};
+        tblModel = new DefaultTableModel(null,columnas){
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
+        //
+        this.tblTablaExperiencia.setModel(tblModel);
+        //this.tblTablaExperiencia.setRowHeight(40);
+    }
+    
+    public void disenoColumnas(){
+        this.disenoBase();
+        this.tblTablaExperiencia.getColumnModel().getColumn(0).setPreferredWidth(20);
+        this.tblTablaExperiencia.getColumnModel().getColumn(0).setResizable(false);
+    }
+    
+    public void cargarBDexperiencia_laboral(){
+        this.disenoBase();
+        Object[] registros = new Object[40];
+        frame = new BD_Tabla();
+        TableModel modelo = frame.getJtblEmpleadosBD().getModel();
+        String id = (String) modelo.getValueAt(frame.getJtblEmpleadosBD().getSelectedRow(), 0);
+        String sql = "SELECT * FROM experiencia_laboral WHERE CED_EMP_EXP=1802346793";
+        Conexion cc = new Conexion();
+        Connection cn = cc.localhost("proy_agiles");
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                registros[0] = rs.getString("EMP_EXP");
+                registros[1] = rs.getString("CAR_EXP");
+                registros[2] = rs.getString("CONT_EXP");
+                registros[3] = rs.getString("DIR_EXP");
+                registros[4] = rs.getString("TIE_EXP");
+                tblModel.addRow(registros);
+            }
+            
+            this.tblTablaExperiencia.setModel(tblModel);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }  
+    }
+    
+    public void cargarBDempleados(){
+        this.disenoBase();
+        TableModel modelo = frame.getJtblEmpleadosBD().getModel();
+        String id = (String) modelo.getValueAt(frame.getJtblEmpleadosBD().getSelectedRow(), 0);
+        String sql = "SELECT * FROM empleados WHERE CED_EMP="+id;
+        Conexion cc = new Conexion();
+        Connection cn = cc.localhost("proy_agiles");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate fechaNac = null;
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                this.lblCedula.setText(rs.getString("CED_EMP"));
+                this.lblNombre.setText(rs.getString("NOM_EMP"));
+                this.lblNacionalidad.setText(rs.getString("NAC_EMP"));
+                fechaNac = LocalDate.parse(rs.getString("FEC_NAC_EMP"), formatter);
+                this.lblTelefono.setText(rs.getString("TEL_EMP"));
+                this.lblEstudios.setText(rs.getString("ESTU_EMP"));      
+            }
+            this.lblAreasOficio.setText("Ninguno");
+            this.tblTablaExperiencia.setModel(tblModel);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        Period edad = Period.between(fechaNac, LocalDate.now());
+        this.lblEdad.setText(String.valueOf(edad.getYears()));
+        
+    }
+    
     private void jpEncabezadoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpEncabezadoMousePressed
         this.xMouse = evt.getX();
         this.yMouse = evt.getY();
@@ -332,22 +426,7 @@ public class Info_Prof extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Info_Prof.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Info_Prof.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Info_Prof.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Info_Prof.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+        
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -400,30 +479,30 @@ public class Info_Prof extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel BookWork;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel CI;
+    private javax.swing.JLabel Experiencia_Profesional;
+    private javax.swing.JLabel Info_Profesional;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPanel jpEncabezado;
-    private javax.swing.JLabel lblImagenLogo;
+    private javax.swing.JPanel jpMedium;
+    private javax.swing.JPanel jpMedium2;
+    private javax.swing.JLabel lblAreasOficio;
+    private javax.swing.JLabel lblBoldAreasOficio;
+    private javax.swing.JLabel lblBoldEdad;
+    private javax.swing.JLabel lblBoldEstudios;
+    private javax.swing.JLabel lblBoldNacionalidad;
+    private javax.swing.JLabel lblBoldNombre;
+    private javax.swing.JLabel lblBoldTelefono;
+    private javax.swing.JLabel lblCedula;
+    private javax.swing.JLabel lblEdad;
+    private javax.swing.JLabel lblEstudios;
+    private javax.swing.JLabel lblNacionalidad;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblTelefono;
+    private javax.swing.JLabel lblimgFoto;
+    private javax.swing.JLabel lblimgInfo_Prof;
+    private javax.swing.JTable tblTablaExperiencia;
     // End of variables declaration//GEN-END:variables
 }

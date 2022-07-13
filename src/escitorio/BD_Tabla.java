@@ -24,6 +24,8 @@ import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import escitorio.Info_Prof;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -36,24 +38,22 @@ public class BD_Tabla extends javax.swing.JFrame {
     
     int xMouse;
     int yMouse;
+    String user;
     private ImageIcon imagen;
     private Icon icono;
     private DefaultTableModel tblModel;
-    String user;
     private Info_Prof frame;
     
-    public BD_Tabla(String usuario) {
+    public BD_Tabla(String user) {
+        this.user = user;
         initComponents();
-        user = usuario;
         this.setLocationRelativeTo(null);
         this.pintarImagen(this.lblImagenLogo, "src/imagenes/Logo Aplicacion.png");
         this.cargar();
-        //this.buscar();
+        //(String) modelo.getValueAt(frame.getJtblEmpleadosBD().getSelectedRow(), 0);
+        //ced = (String) tblModel.getValueAt(this.jtblEmpleadosBD.getSelectedRow(), 0);
     }
 
-    BD_Tabla() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     
     public void diseno(){
         String[] columnas = {"Cedula","Nombre","Edad","Profesion","Cant. Contratos","Calificacion","Informacion Academica","Resenas"," "};
@@ -281,9 +281,7 @@ public class BD_Tabla extends javax.swing.JFrame {
         );
         jpEncabezadoLayout.setVerticalGroup(
             jpEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpEncabezadoLayout.createSequentialGroup()
-                .addComponent(jpBarraBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jpBarraBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(jpEncabezadoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblImagenLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -291,7 +289,7 @@ public class BD_Tabla extends javax.swing.JFrame {
             .addGroup(jpEncabezadoLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(BookWork, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bg.add(jpEncabezado, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 130));
@@ -305,23 +303,26 @@ public class BD_Tabla extends javax.swing.JFrame {
 
         jtblEmpleadosBD.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Cedula", "Nombre", "Edad", "Profesion", "Cant. Contratos", "Calificacion", "Info. Academica", "Resenas", " "
             }
         ));
         jtblEmpleadosBD.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jtblEmpleadosBDMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jtblEmpleadosBDMouseEntered(evt);
+            }
         });
         jScrollPane1.setViewportView(jtblEmpleadosBD);
 
-        bg.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 1000, 470));
+        bg.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 1310, 520));
 
         jbtnBuscar.setText("Buscar");
         jbtnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -399,16 +400,17 @@ public class BD_Tabla extends javax.swing.JFrame {
     private void jtblEmpleadosBDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblEmpleadosBDMouseClicked
         int column = this.jtblEmpleadosBD.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY()/this.jtblEmpleadosBD.getRowHeight();
-        this.frame = new Info_Prof();
+        String cd = (String) this.tblModel.getValueAt(this.jtblEmpleadosBD.getSelectedRow(), 0);
+        this.frame = new Info_Prof(cd);
         if(row < this.jtblEmpleadosBD.getRowCount() && row >= 0 && column < this.jtblEmpleadosBD.getColumnCount() && column >= 0){
             Object value = this.jtblEmpleadosBD.getValueAt(row, column);
             if(value instanceof JButton){
-                ((JButton)value).doClick();
+                //((JButton)value).doClick();
                 JButton boton = (JButton) value;
-
-                if(boton.getName().equals("infoA"))
-                    frame.setVisible(true);
                 
+                if(boton.getName().equals("infoA")){
+                   frame.setVisible(true);
+                }
                 if(boton.getName().equals("Resena"))
                     JOptionPane.showMessageDialog(null, "No existen resenas de este usuario");
                 
@@ -419,6 +421,11 @@ public class BD_Tabla extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jtblEmpleadosBDMouseClicked
 
+    private void jtblEmpleadosBDMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblEmpleadosBDMouseEntered
+
+    }//GEN-LAST:event_jtblEmpleadosBDMouseEntered
+
+    
     /**
      * @param args the command line arguments
      */

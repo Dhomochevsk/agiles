@@ -41,13 +41,19 @@ public class Info_Prof extends javax.swing.JFrame {
     private DefaultTableModel tblModel;
     private TableColumn tblColumnas;
     private BD_Tabla frame;
+    String cd;
     
-    public Info_Prof() {
+    public Info_Prof(String cd) {
+        this.cd = cd;
         initComponents();
         this.setLocationRelativeTo(null);
         this.pintarImagen(this.lblimgInfo_Prof, "src/imagenes/profesion_icono.png");
-        this.cargarBDexperiencia_laboral();
         this.cargarBDempleados();
+        this.cargarBDexperiencia_laboral();
+    }
+
+    private Info_Prof() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -87,6 +93,14 @@ public class Info_Prof extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                formMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                formMouseExited(evt);
+            }
+        });
 
         jpEncabezado.setBackground(new java.awt.Color(157, 214, 238));
         jpEncabezado.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -341,7 +355,6 @@ public class Info_Prof extends javax.swing.JFrame {
         };
         //
         this.tblTablaExperiencia.setModel(tblModel);
-        //this.tblTablaExperiencia.setRowHeight(40);
     }
     
     public void disenoColumnas(){
@@ -353,10 +366,7 @@ public class Info_Prof extends javax.swing.JFrame {
     public void cargarBDexperiencia_laboral(){
         this.disenoBase();
         Object[] registros = new Object[40];
-//        frame = new BD_Tabla();
-//        TableModel modelo = frame.getJtblEmpleadosBD().getModel();
-//        String id = (String) modelo.getValueAt(frame.getJtblEmpleadosBD().getSelectedRow(), 0);
-        String sql = "SELECT * FROM experiencia_laboral WHERE CED_EMP_EXP=1802346793";
+        String sql = "SELECT * FROM experiencia_laboral WHERE CED_EMP_EXP='"+cd+"'";
         Conexion cc = new Conexion();
         Connection cn = cc.localhost("proy_agiles");
         try {
@@ -378,9 +388,7 @@ public class Info_Prof extends javax.swing.JFrame {
     }
     
     public void cargarBDempleados(){
-//        TableModel modelo = frame.getJtblEmpleadosBD().getModel();
-//        String id = (String) modelo.getValueAt(frame.getJtblEmpleadosBD().getSelectedRow(), 0);
-        String sql = "SELECT * FROM empleados WHERE CED_EMP=1802346793";
+        String sql = "SELECT * FROM empleados WHERE CED_EMP='"+cd+"'";
         Conexion cc = new Conexion();
         Connection cn = cc.localhost("proy_agiles");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -390,7 +398,7 @@ public class Info_Prof extends javax.swing.JFrame {
             ResultSet rs = st.executeQuery(sql);
             while(rs.next()){
                 this.lblCedula.setText(rs.getString("CED_EMP"));
-                this.lblNombre.setText(rs.getString("NOM_EMP"));
+                this.lblNombre.setText(rs.getString("NOM_EMP")+" "+rs.getString("APE_EMP"));
                 this.lblNacionalidad.setText(rs.getString("NAC_EMP"));
                 fechaNac = LocalDate.parse(rs.getString("FEC_NAC_EMP"), formatter);
                 this.lblTelefono.setText(rs.getString("TEL_EMP"));
@@ -415,6 +423,14 @@ public class Info_Prof extends javax.swing.JFrame {
         int y = evt.getYOnScreen();
         this.setLocation(x-this.xMouse, y - this.yMouse);
     }//GEN-LAST:event_jpEncabezadoMouseDragged
+
+    private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
+        this.setVisible(true);
+    }//GEN-LAST:event_formMouseEntered
+
+    private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited
+        this.setVisible(false);
+    }//GEN-LAST:event_formMouseExited
 
     /**
      * @param args the command line arguments

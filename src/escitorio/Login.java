@@ -32,6 +32,7 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         registro_transparente();
         this.pintarImagen(this.lblImagenLogo, "src/imagenes/Logo Aplicacion.png");
+        
     }
     
     

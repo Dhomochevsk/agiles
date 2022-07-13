@@ -6,10 +6,14 @@
 package escitorio;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,9 +26,12 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Login
      */
     int xmouse, ymouse;
+    private ImageIcon imagen;
+    private Icon icono;
     public Login() {
         initComponents();
         registro_transparente();
+        this.pintarImagen(this.lblImagenLogo, "src/imagenes/Logo Aplicacion.png");
     }
     
     
@@ -33,11 +40,10 @@ public class Login extends javax.swing.JFrame {
         try {
            
             Conexion cc=new Conexion();
-            Connection cn = cc.conexion();
+            Connection cn = cc.localhost("proy_agiles");
             String usuario =jtxt_usuario.getText();
             String contraseña = jtxt_pass.getText();
-            String sql = "";
-            sql ="select *from CLIENTES where  USE_CLI='"+usuario+"' and PASS_CLI= '"+contraseña+"' ";
+            String sql ="SELECT * from clientes WHERE USE_CLI='"+usuario+"' AND PASS_CLI='"+contraseña+"' ;";
             Statement psd = cn.createStatement();
             ResultSet rs=psd.executeQuery(sql);    
             if(rs.next())
@@ -82,6 +88,7 @@ public class Login extends javax.swing.JFrame {
         jbl_minus = new javax.swing.JLabel();
         jpl_exit = new javax.swing.JPanel();
         jbl_exit = new javax.swing.JLabel();
+        lblImagenLogo = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jtxt_usuario = new javax.swing.JTextField();
         jtxt_pass = new javax.swing.JTextField();
@@ -118,10 +125,10 @@ public class Login extends javax.swing.JFrame {
         });
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel6.setFont(new java.awt.Font("Roboto Black", 0, 24)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Calibri", 1, 60)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("BOOKWORK");
-        jPanel6.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 220, 50));
+        jLabel6.setText("BookWork");
+        jPanel6.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 280, 50));
 
         jpl_minus.setBackground(new java.awt.Color(204, 204, 204));
         jpl_minus.setMinimumSize(new java.awt.Dimension(40, 40));
@@ -192,8 +199,9 @@ public class Login extends javax.swing.JFrame {
         );
 
         jPanel6.add(jpl_exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 0, 50, 40));
+        jPanel6.add(lblImagenLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 0, 180, 118));
 
-        background.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 110));
+        background.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 130));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -222,18 +230,17 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Roboto Black", 0, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jLabel1.setText("USUARIO:");
 
-        jLabel2.setFont(new java.awt.Font("Roboto Black", 0, 11)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jLabel2.setText("CONTRASEÑA:");
 
-        jLabel3.setFont(new java.awt.Font("Roboto Black", 0, 11)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("INICIO DE SESION");
 
-        jbtn_Registrarse.setBackground(new java.awt.Color(255, 255, 255));
-        jbtn_Registrarse.setFont(new java.awt.Font("Roboto Black", 1, 17)); // NOI18N
+        jbtn_Registrarse.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jbtn_Registrarse.setForeground(new java.awt.Color(138, 237, 237));
         jbtn_Registrarse.setText("REGISTRARSE");
         jbtn_Registrarse.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -250,7 +257,7 @@ public class Login extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(157, 214, 238));
 
         jbl_ingresar.setBackground(new java.awt.Color(255, 255, 255));
-        jbl_ingresar.setFont(new java.awt.Font("Roboto Black", 0, 14)); // NOI18N
+        jbl_ingresar.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jbl_ingresar.setForeground(new java.awt.Color(255, 255, 255));
         jbl_ingresar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jbl_ingresar.setText("INGRESAR");
@@ -313,10 +320,10 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbtn_Registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
-        background.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 630, 330));
+        background.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 630, 310));
 
         getContentPane().add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -406,7 +413,16 @@ public class Login extends javax.swing.JFrame {
     private void jbtn_RegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtn_RegistrarseActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jbtn_RegistrarseActionPerformed
-
+    
+    private void pintarImagen(JLabel lbl, String ruta){
+        this.imagen = new ImageIcon(ruta);
+        this.icono = new ImageIcon(this.imagen.getImage().getScaledInstance(
+                lbl.getWidth(), 
+                lbl.getHeight(), 
+                Image.SCALE_DEFAULT));
+        lbl.setIcon(this.icono);
+        this.repaint();
+    }
     /**
      * @param args the command line arguments
      */
@@ -460,5 +476,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jpl_minus;
     private javax.swing.JTextField jtxt_pass;
     private javax.swing.JTextField jtxt_usuario;
+    private javax.swing.JLabel lblImagenLogo;
     // End of variables declaration//GEN-END:variables
 }

@@ -6,6 +6,10 @@
 package escitorio;
 
 import java.awt.Color;
+import java.awt.Image;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 
@@ -19,9 +23,12 @@ public class Registro extends javax.swing.JFrame {
      * Creates new form Registro
      */
     int xmouse, ymouse;
+    private ImageIcon imagen;
+    private Icon icono;
     public Registro() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.pintarImagen(this.lblImagenLogo, "src/imagenes/Logo Aplicacion.png");
     }
 
     public void limpiarTexto(JTextField llave, String identificador){
@@ -151,7 +158,8 @@ public class Registro extends javax.swing.JFrame {
         jbl_minus = new javax.swing.JLabel();
         jpl_exit = new javax.swing.JPanel();
         jbl_exit = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        lblImagenLogo = new javax.swing.JLabel();
         jSeparator6 = new javax.swing.JSeparator();
         jSeparator7 = new javax.swing.JSeparator();
         jtxt_Cedula = new javax.swing.JTextField();
@@ -185,7 +193,7 @@ public class Registro extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(138, 237, 237));
         jPanel3.setPreferredSize(new java.awt.Dimension(105, 23));
 
-        jLabel1.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("ACEPTAR");
@@ -402,12 +410,13 @@ public class Registro extends javax.swing.JFrame {
 
         jPanel6.add(jpl_exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 0, 50, 40));
 
-        jLabel9.setFont(new java.awt.Font("Roboto Black", 0, 24)); // NOI18N
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("BOOKWORK");
-        jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 220, 50));
+        jLabel11.setFont(new java.awt.Font("Calibri", 1, 60)); // NOI18N
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("BookWork");
+        jPanel6.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 280, 50));
+        jPanel6.add(lblImagenLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 0, 180, 118));
 
-        jPanel1.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 110));
+        jPanel1.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 130));
 
         jSeparator6.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 320, 150, 10));
@@ -530,7 +539,16 @@ public class Registro extends javax.swing.JFrame {
     private void jtxt_CedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxt_CedulaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtxt_CedulaActionPerformed
-
+    
+    private void pintarImagen(JLabel lbl, String ruta){
+        this.imagen = new ImageIcon(ruta);
+        this.icono = new ImageIcon(this.imagen.getImage().getScaledInstance(
+                lbl.getWidth(), 
+                lbl.getHeight(), 
+                Image.SCALE_DEFAULT));
+        lbl.setIcon(this.icono);
+        this.repaint();
+    }
     /**
      * @param args the command line arguments
      */
@@ -569,6 +587,7 @@ public class Registro extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -576,7 +595,6 @@ public class Registro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -602,5 +620,6 @@ public class Registro extends javax.swing.JFrame {
     private javax.swing.JTextField jtxt_Pass;
     private javax.swing.JTextField jtxt_Telefono;
     private javax.swing.JTextField jtxt_Usuario;
+    private javax.swing.JLabel lblImagenLogo;
     // End of variables declaration//GEN-END:variables
 }

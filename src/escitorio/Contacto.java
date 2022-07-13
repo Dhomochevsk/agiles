@@ -7,6 +7,7 @@ package escitorio;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -39,10 +40,11 @@ public class Contacto extends javax.swing.JFrame {
         
         try {
             Conexion cc=new Conexion();
-            Connection cn = cc.conexion();
+            Connection cn = cc.localhost("proy_agiles");
             String sql="";
-            sql="insert into CLIENTES(CED_CLI,NOM_CLI,APE_CLI,EMAIL_CLI,TEL_CLI,USE_CLI,PASS_CLI) values(?,?,?,?,?,?,?)";
+            sql="insert into clientes(CED_CLI,NOM_CLI,APE_CLI,EMAIL_CLI,TEL_CLI,USE_CLI,PASS_CLI) values(?,?,?,?,?,?,?)";
             PreparedStatement psd = cn.prepareStatement(sql);
+            
             psd.setString(1, ced);
             psd.setString(2, nom);
             psd.setString(3, ape);

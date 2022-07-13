@@ -49,19 +49,15 @@ public class Menu_Principal extends javax.swing.JFrame {
             String [] registros = new String[3];
             modelo = new DefaultTableModel(null,titulos);
             Conexion cc=new Conexion();
-            Connection cn = cc.conexion();
-            String sql = "";
-            sql ="select *from CONTRATACIONES where CED_CLI_CON=(select CED_CLI from CLIENTES where USE_CLI='"+user+"');";
+            Connection cn = cc.localhost("proy_agiles");
+            String sql = "select *from contrataciones where CED_CLI_CON=(select CED_CLI from CLIENTES where USE_CLI='"+user+"');";
             Statement psd = cn.createStatement();
             ResultSet rs=psd.executeQuery(sql);
             while(rs.next())
-            {
-                
+            { 
                 registros[0]=rs.getString("CED_EMP_CON");
                 registros[1]=rs.getString("CED_CLI_CON");
                // registros[2]="PENDIENTE";
-
-                          
 
                 if(rs.getBoolean("EST_CON"))
                 {
@@ -74,10 +70,6 @@ public class Menu_Principal extends javax.swing.JFrame {
                         registros[2]="Rechazado";
                 }
 
-                
-
-                
-                
                 modelo.addRow(registros);
             }
             jtbl_ContratosRecientes.setModel(modelo);;
@@ -92,9 +84,8 @@ public class Menu_Principal extends javax.swing.JFrame {
             String [] registros = new String[2];
             modelo = new DefaultTableModel(null,titulos);
             Conexion cc=new Conexion();
-            Connection cn = cc.conexion();
-            String sql = "";
-            sql ="select E.USU_EMP, C.DES_CONT from CONTACTOS C, EMPLEADOS E where C.USE_CLI_CONT='"+user+"' AND E.CED_EMP =(SELECT CED_EMP_CONT FROM CONTACTOS WHERE USE_CLI_CONT='"+user+"');";
+            Connection cn = cc.localhost("proy_agiles");
+            String sql = "select E.USU_EMP, C.DES_CONT from CONTACTOS C, EMPLEADOS E where C.USE_CLI_CONT='"+user+"' AND E.CED_EMP =(SELECT CED_EMP_CONT FROM CONTACTOS WHERE USE_CLI_CONT='"+user+"');";
             Statement psd = cn.createStatement();
             ResultSet rs=psd.executeQuery(sql);
             while(rs.next())
@@ -123,8 +114,7 @@ public class Menu_Principal extends javax.swing.JFrame {
             ResultSet rs=psd.executeQuery(sql);
             int valor =  rs.getInt("ID_CONT")+1;
                 return valor;
-
-                
+   
             
         } catch (SQLException ex) {
             return 0;

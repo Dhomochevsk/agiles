@@ -32,7 +32,6 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         registro_transparente();
         this.pintarImagen(this.lblImagenLogo, "src/imagenes/Logo Aplicacion.png");
-        
     }
     
     
@@ -44,7 +43,8 @@ public class Login extends javax.swing.JFrame {
             Connection cn = cc.localhost("proy_agiles");
             String usuario =jtxt_usuario.getText();
             String contraseña = jtxt_pass.getText();
-            String sql ="SELECT * from clientes WHERE USE_CLI='"+usuario+"' AND PASS_CLI='"+contraseña+"' ;";
+            Encriptar pass = new Encriptar();
+            String sql ="SELECT * from clientes WHERE USE_CLI='"+usuario+"' AND PASS_CLI='"+pass.Encriptar(contraseña)+"' ;";
             Statement psd = cn.createStatement();
             ResultSet rs=psd.executeQuery(sql);    
             if(rs.next())

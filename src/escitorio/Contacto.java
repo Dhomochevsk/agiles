@@ -41,8 +41,7 @@ public class Contacto extends javax.swing.JFrame {
         try {
             Conexion cc=new Conexion();
             Connection cn = cc.localhost("proy_agiles");
-            String sql="";
-            sql="insert into clientes(CED_CLI,NOM_CLI,APE_CLI,EMAIL_CLI,TEL_CLI,USE_CLI,PASS_CLI) values(?,?,?,?,?,?,?)";
+            String sql="insert into clientes(CED_CLI,NOM_CLI,APE_CLI,EMAIL_CLI,TEL_CLI,USE_CLI,PASS_CLI) values(?,?,?,?,?,?,?)";
             PreparedStatement psd = cn.prepareStatement(sql);
             
             psd.setString(1, ced);
@@ -61,7 +60,7 @@ public class Contacto extends javax.swing.JFrame {
             }
            
         } catch (SQLException ex) {
-           JOptionPane.showMessageDialog(null, ex);
+           JOptionPane.showMessageDialog(null,"El usuario o la cedula ya estan registrados");
         }
     
     }
@@ -220,7 +219,6 @@ public class Contacto extends javax.swing.JFrame {
         Menu_Principal a = new Menu_Principal(c_usu);
         a.setVisible(true);
         this.setVisible(false);
-        
     }//GEN-LAST:event_jbl_AceptarMouseClicked
 
     /**

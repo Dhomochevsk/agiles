@@ -42,7 +42,8 @@ public class BD_Tabla extends javax.swing.JFrame {
     private ImageIcon imagen;
     private Icon icono;
     private DefaultTableModel tblModel;
-    private Info_Prof frame;
+    private Info_Prof frameInfo_Prof;
+    private Resenas frameResenas;
     
     public BD_Tabla(String user) {
         this.user = user;
@@ -152,6 +153,9 @@ public class BD_Tabla extends javax.swing.JFrame {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
+        
+        if(registros == null)
+            JOptionPane.showMessageDialog(null, "No existen registros de esa profesion");
            
     }
 
@@ -401,7 +405,8 @@ public class BD_Tabla extends javax.swing.JFrame {
         int column = this.jtblEmpleadosBD.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY()/this.jtblEmpleadosBD.getRowHeight();
         String cd = (String) this.tblModel.getValueAt(this.jtblEmpleadosBD.getSelectedRow(), 0);
-        this.frame = new Info_Prof(cd);
+        this.frameInfo_Prof = new Info_Prof(cd);
+        this.frameResenas = new Resenas(cd);
         if(row < this.jtblEmpleadosBD.getRowCount() && row >= 0 && column < this.jtblEmpleadosBD.getColumnCount() && column >= 0){
             Object value = this.jtblEmpleadosBD.getValueAt(row, column);
             if(value instanceof JButton){
@@ -409,10 +414,13 @@ public class BD_Tabla extends javax.swing.JFrame {
                 JButton boton = (JButton) value;
                 
                 if(boton.getName().equals("infoA")){
-                   frame.setVisible(true);
+                   frameInfo_Prof.setVisible(true);
                 }
                 if(boton.getName().equals("Resena"))
-                    JOptionPane.showMessageDialog(null, "No existen resenas de este usuario");
+                    if(this.frameResenas.tblModel.getRowCount() == 0)
+                        JOptionPane.showMessageDialog(null, "No existen resenas de este usuario");
+                    else
+                        this.frameResenas.setVisible(true);
                 
                 if(boton.getName().equals("Contacto"))
                     JOptionPane.showMessageDialog(null, "El contacto no se encuentra habilitado");

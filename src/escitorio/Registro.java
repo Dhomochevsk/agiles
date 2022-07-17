@@ -10,6 +10,7 @@ import java.awt.Image;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 
@@ -227,6 +228,11 @@ public class Registro extends javax.swing.JFrame {
                 jtxt_NombreMouseClicked(evt);
             }
         });
+        jtxt_Nombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxt_NombreKeyTyped(evt);
+            }
+        });
         jPanel1.add(jtxt_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 140, 151, 31));
 
         jtxt_Apellido.setForeground(java.awt.Color.lightGray);
@@ -240,6 +246,11 @@ public class Registro extends javax.swing.JFrame {
         jtxt_Apellido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtxt_ApellidoActionPerformed(evt);
+            }
+        });
+        jtxt_Apellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxt_ApellidoKeyTyped(evt);
             }
         });
         jPanel1.add(jtxt_Apellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 190, 150, 30));
@@ -269,6 +280,11 @@ public class Registro extends javax.swing.JFrame {
         jtxt_Telefono.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jtxt_TelefonoMouseClicked(evt);
+            }
+        });
+        jtxt_Telefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxt_TelefonoKeyTyped(evt);
             }
         });
         jPanel1.add(jtxt_Telefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 290, 150, 30));
@@ -437,6 +453,11 @@ public class Registro extends javax.swing.JFrame {
                 jtxt_CedulaActionPerformed(evt);
             }
         });
+        jtxt_Cedula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxt_CedulaKeyTyped(evt);
+            }
+        });
         jPanel1.add(jtxt_Cedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, 150, 30));
 
         jSeparator9.setForeground(new java.awt.Color(0, 0, 0));
@@ -491,9 +512,34 @@ public class Registro extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel6MousePressed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        Contacto a = new Contacto(jtxt_Cedula.getText(),jtxt_Nombre.getText(),jtxt_Apellido.getText(),jtxt_Email.getText(),jtxt_Telefono.getText(),jtxt_Usuario.getText(),jtxt_ConfPass.getText());
-        a.setVisible(true);
-        this.setVisible(false);
+ 
+if(jtxt_Cedula.getText().equalsIgnoreCase("")|| jtxt_Cedula.getText().equalsIgnoreCase("Ingresar Cedula")||
+            jtxt_Nombre.getText().equalsIgnoreCase("")|| jtxt_Nombre.getText().equalsIgnoreCase("Ingresar Nombre")||
+            jtxt_Apellido.getText().equalsIgnoreCase("")|| jtxt_Apellido.getText().equalsIgnoreCase("Ingresar Apellido")||
+            jtxt_Email.getText().equalsIgnoreCase("")|| jtxt_Email.getText().equalsIgnoreCase("Ingresar email")||
+            jtxt_Telefono.getText().equalsIgnoreCase("")|| jtxt_Telefono.getText().equalsIgnoreCase("Ingresar Telefono")||
+            jtxt_Usuario.getText().equalsIgnoreCase("")|| jtxt_Usuario.getText().equalsIgnoreCase("Ingresar Usuario")||
+            jtxt_Pass.getText().equalsIgnoreCase("")|| jtxt_Pass.getText().equalsIgnoreCase("Ingresar Contraseña")||
+            jtxt_ConfPass.getText().equalsIgnoreCase("")|| jtxt_ConfPass.getText().equalsIgnoreCase("Ingresar Contraseña")
+                ){
+        JOptionPane.showMessageDialog(null,"Todos los campos deben estar completos");
+        }
+        else{
+        if(jtxt_Cedula.getText().length()==10)
+        {
+        if(jtxt_ConfPass.getText().equalsIgnoreCase(jtxt_Pass.getText()))
+        {
+            Contacto a = new Contacto(jtxt_Cedula.getText(),jtxt_Nombre.getText(),jtxt_Apellido.getText(),jtxt_Email.getText(),jtxt_Telefono.getText(),jtxt_Usuario.getText(),jtxt_ConfPass.getText());
+            a.setVisible(true);
+            this.setVisible(false);
+        }
+        else{
+        JOptionPane.showMessageDialog(null,"La contraseña no coincide con la confirmacion de contraseña");
+        }
+        }else{
+        JOptionPane.showMessageDialog(null,"La cedula debe tener 10 digitos");
+        }
+        }
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jtxt_NombreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtxt_NombreMouseClicked
@@ -539,6 +585,26 @@ public class Registro extends javax.swing.JFrame {
     private void jtxt_CedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxt_CedulaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtxt_CedulaActionPerformed
+
+    private void jtxt_NombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_NombreKeyTyped
+        char c = evt.getKeyChar();
+        if((c<'a' || c>'z')&&(c<'A' || c>'Z')){evt.consume();}
+    }//GEN-LAST:event_jtxt_NombreKeyTyped
+
+    private void jtxt_ApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_ApellidoKeyTyped
+        char c = evt.getKeyChar();
+        if((c<'a' || c>'z')&&(c<'A' || c>'Z')){evt.consume();}
+    }//GEN-LAST:event_jtxt_ApellidoKeyTyped
+
+    private void jtxt_CedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_CedulaKeyTyped
+        char c = evt.getKeyChar();
+        if(c<'0' || c>'9'){evt.consume();}
+    }//GEN-LAST:event_jtxt_CedulaKeyTyped
+
+    private void jtxt_TelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_TelefonoKeyTyped
+        char c = evt.getKeyChar();
+        if(c<'0' || c>'9'){evt.consume();}
+    }//GEN-LAST:event_jtxt_TelefonoKeyTyped
     
     private void pintarImagen(JLabel lbl, String ruta){
         this.imagen = new ImageIcon(ruta);
@@ -583,6 +649,42 @@ public class Registro extends javax.swing.JFrame {
             }
         });
     }
+
+    public JTextField getJtxt_Apellido() {
+        return jtxt_Apellido;
+    }
+
+    public JTextField getJtxt_Cedula() {
+        return jtxt_Cedula;
+    }
+
+    public JTextField getJtxt_ConfPass() {
+        return jtxt_ConfPass;
+    }
+
+    public JTextField getJtxt_Email() {
+        return jtxt_Email;
+    }
+
+    public JTextField getJtxt_Nombre() {
+        return jtxt_Nombre;
+    }
+
+    public JTextField getJtxt_Pass() {
+        return jtxt_Pass;
+    }
+
+    public JTextField getJtxt_Telefono() {
+        return jtxt_Telefono;
+    }
+
+    public JTextField getJtxt_Usuario() {
+        return jtxt_Usuario;
+    }
+
+    
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

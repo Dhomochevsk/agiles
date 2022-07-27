@@ -44,6 +44,7 @@ public class BD_Tabla extends javax.swing.JFrame {
     private DefaultTableModel tblModel;
     private Info_Prof frameInfo_Prof;
     private Resenas frameResenas;
+    private Contratar frameContratar;
     
     public BD_Tabla(String user) {
         this.user = user;
@@ -57,7 +58,7 @@ public class BD_Tabla extends javax.swing.JFrame {
 
     
     public void diseno(){
-        String[] columnas = {"Cedula","Nombre","Edad","Profesion","Cant. Contratos","Calificacion","Informacion Academica","Resenas"," "};
+        String[] columnas = {"Cedula","Nombre","Profesion","Cant. Contratos","Calificacion","Informacion Academica","Resenas"," "};
         tblModel = new DefaultTableModel(null,columnas){
             public boolean isCellEditable(int row, int column){
                 return false;
@@ -71,7 +72,9 @@ public class BD_Tabla extends javax.swing.JFrame {
         this.diseno();
         Object[] registros = new Object[40];
         String sql = "SELECT * FROM empleados";
-        String sql2 = "SELECT NOM_HAB FROM habilidades WHERE ID_HAB IN(SELECT ID_HAB FROM emp_habil WHERE CED_EMP=";
+        String sql2 = "SELECT DES_HAB FROM habilidades WHERE CED_EMP_HAB =";
+        String sql3 = "SELECT COUNT(CED_EMP_CON) FROM CONTRATACIONES WHERE CED_EMP_CON=";
+        String sql4 = "SELECT AVG(PUNT_CON) FROM CONTRATACIONES WHERE CED_EMP_CON =";
         JButton btnInfoAcad = new JButton("...");
         btnInfoAcad.setName("infoA");
         JButton btnResenas = new JButton("...");
@@ -79,30 +82,42 @@ public class BD_Tabla extends javax.swing.JFrame {
         JButton btnContacto = new JButton("Contacto");
         btnContacto.setName("Contacto");
         Conexion cc = new Conexion();
-        Connection cn = cc.localhost("proy_agiles");
+        Connection cn = cc.localhost("proy_final");
         this.jtblEmpleadosBD.setDefaultRenderer(Object.class, new RenderTable());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate fechaNac = null;
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDate fechaNac = null;
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             
             while(rs.next()){
-                registros[0] = rs.getString("CED_EMP");
-                registros[1] = rs.getString("NOM_EMP") +" "+rs.getString("APE_EMP");
-                fechaNac = LocalDate.parse(rs.getString("FEC_NAC_EMP"), formatter);
-                Period edad = Period.between(fechaNac, LocalDate.now());
-                registros[2] = String.valueOf(edad.getYears());
+                registros[0] = rs.getString("EMP_CEDULA");
+                registros[1] = rs.getString("EMP_NOMBRE") +" "+rs.getString("EMP_APELLIDO");
+//                fechaNac = LocalDate.parse(rs.getString("EMP_FEC_NAC"), formatter);
+//                Period edad = Period.between(fechaNac, LocalDate.now());
+//                registros[2] = String.valueOf(edad.getYears());
                 Statement st2 = cn.createStatement();
-                ResultSet rs2 = st2.executeQuery(sql2+registros[0]+")");
+                ResultSet rs2 = st2.executeQuery(sql2+registros[0]);
                 while(rs2.next()){
-                registros[3] = rs2.getString("NOM_HAB");
+                registros[2] = rs2.getString("DES_HAB");
                 }
-                registros[4] = "0";
-                registros[5] = "0";
-                registros[6] = btnInfoAcad;
-                registros[7] = btnResenas;
-                registros[8] = btnContacto;
+                Statement st3 = cn.createStatement();
+                ResultSet rs3 = st3.executeQuery(sql3+registros[0]);
+                while(rs3.next()){
+                registros[3] = rs3.getInt("COUNT(CED_EMP_CON)");
+                }
+                Statement st4 = cn.createStatement();
+                ResultSet rs4 = st4.executeQuery(sql4+registros[0]);
+                while(rs4.next()){
+                    if ((int)registros[3] == 0) {
+                        registros[4] = "Ninguna";
+                    } else {
+                        registros[4] = rs4.getFloat("AVG(PUNT_CON)");
+                    }
+                }
+                registros[5] = btnInfoAcad;
+                registros[6] = btnResenas;
+                registros[7] = btnContacto;
                 tblModel.addRow(registros);
             }
             
@@ -115,8 +130,10 @@ public class BD_Tabla extends javax.swing.JFrame {
     public void buscar(){
         this.diseno();
         Object[] registros = new Object[40];
-        String sql = "SELECT * FROM empleados WHERE ced_emp IN (SELECT CED_EMP FROM emp_habil WHERE id_hab IN (SELECT id_hab FROM habilidades WHERE nom_hab='"+this.jcbProfesion.getSelectedItem().toString()+"'))";
-        String sql2 = "SELECT NOM_HAB FROM habilidades WHERE ID_HAB IN(SELECT ID_HAB FROM emp_habil WHERE CED_EMP=";
+        String sql = "SELECT * FROM empleados WHERE emp_cedula IN (SELECT CED_EMP_HAB FROM habilidades WHERE DES_HAB = '"+this.jcbProfesion.getSelectedItem().toString()+"')";
+        String sql2 = "SELECT DES_HAB FROM habilidades WHERE CED_EMP_HAB =";
+        String sql3 = "SELECT COUNT(CED_EMP_CON) FROM CONTRATACIONES WHERE CED_EMP_CON=";
+        String sql4 = "SELECT AVG(PUNT_CON) FROM CONTRATACIONES WHERE CED_EMP_CON =";
         JButton btnInfoAcad = new JButton("...");
         btnInfoAcad.setName("infoA");
         JButton btnResenas = new JButton("...");
@@ -124,38 +141,48 @@ public class BD_Tabla extends javax.swing.JFrame {
         JButton btnContacto = new JButton("Contacto");
         btnContacto.setName("Contacto");
         Conexion cc = new Conexion();
-        Connection cn = cc.localhost("proy_agiles");
+        Connection cn = cc.localhost("proy_final");
         this.jtblEmpleadosBD.setDefaultRenderer(Object.class, new RenderTable());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate fechaNac = null;
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDate fechaNac = null;
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
+            
             while(rs.next()){
-                registros[0] = rs.getString("CED_EMP");
-                registros[1] = rs.getString("NOM_EMP") +" "+rs.getString("APE_EMP");
-                fechaNac = LocalDate.parse(rs.getString("FEC_NAC_EMP"), formatter);
-                Period edad = Period.between(fechaNac, LocalDate.now());
-                registros[2] = String.valueOf(edad.getYears());
+                registros[0] = rs.getString("EMP_CEDULA");
+                registros[1] = rs.getString("EMP_NOMBRE") +" "+rs.getString("EMP_APELLIDO");
+//                fechaNac = LocalDate.parse(rs.getString("EMP_FEC_NAC"), formatter);
+//                Period edad = Period.between(fechaNac, LocalDate.now());
+//                registros[2] = String.valueOf(edad.getYears());
                 Statement st2 = cn.createStatement();
-                ResultSet rs2 = st2.executeQuery(sql2+registros[0]+")");
+                ResultSet rs2 = st2.executeQuery(sql2+registros[0]);
                 while(rs2.next()){
-                registros[3] = rs2.getString("NOM_HAB");
+                registros[2] = rs2.getString("DES_HAB");
                 }
-                registros[4] = "0";
-                registros[5] = "0";
-                registros[6] = btnInfoAcad;
-                registros[7] = btnResenas;
-                registros[8] = btnContacto;
+                Statement st3 = cn.createStatement();
+                ResultSet rs3 = st3.executeQuery(sql3+registros[0]);
+                while(rs3.next()){
+                registros[3] = rs3.getInt("COUNT(CED_EMP_CON)");
+                }
+                Statement st4 = cn.createStatement();
+                ResultSet rs4 = st4.executeQuery(sql4+registros[0]);
+                while(rs4.next()){
+                    if ((int)registros[3] == 0) {
+                        registros[4] = "Ninguna";
+                    } else {
+                        registros[4] = rs4.getFloat("AVG(PUNT_CON)");
+                    }
+                }
+                registros[5] = btnInfoAcad;
+                registros[6] = btnResenas;
+                registros[7] = btnContacto;
                 tblModel.addRow(registros);
             }
             this.jtblEmpleadosBD.setModel(tblModel);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
-        }
-        
-        if(registros == null)
-            JOptionPane.showMessageDialog(null, "No existen registros de esa profesion");
+        }      
            
     }
 
@@ -407,6 +434,7 @@ public class BD_Tabla extends javax.swing.JFrame {
         String cd = (String) this.tblModel.getValueAt(this.jtblEmpleadosBD.getSelectedRow(), 0);
         this.frameInfo_Prof = new Info_Prof(cd);
         this.frameResenas = new Resenas(cd);
+        this.frameContratar = new Contratar(cd);
         if(row < this.jtblEmpleadosBD.getRowCount() && row >= 0 && column < this.jtblEmpleadosBD.getColumnCount() && column >= 0){
             Object value = this.jtblEmpleadosBD.getValueAt(row, column);
             if(value instanceof JButton){
@@ -416,14 +444,14 @@ public class BD_Tabla extends javax.swing.JFrame {
                 if(boton.getName().equals("infoA")){
                    frameInfo_Prof.setVisible(true);
                 }
-                if(boton.getName().equals("Resena"))
+                if(boton.getName().equals("Resena")){
                     if(this.frameResenas.tblModel.getRowCount() == 0)
                         JOptionPane.showMessageDialog(null, "No existen resenas de este usuario");
                     else
                         this.frameResenas.setVisible(true);
-                
+                }
                 if(boton.getName().equals("Contacto"))
-                    JOptionPane.showMessageDialog(null, "El contacto no se encuentra habilitado");
+                    this.frameContratar.setVisible(true);
                 
             }
         }

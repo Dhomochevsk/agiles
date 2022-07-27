@@ -19,19 +19,10 @@ public class Conexion {
     public Connection conexion(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/id19227042_proyectoagiles","root","");
-/*            
-//con = (Connection) DriverManager.getConnection("jdbc:mysql://sql304.byetcluster.com/epiz_32140834_proyAgil","epiz_32140834","vLmK3TeqBnPok");
-            //con = (Connection) DriverManager.getConnection("jdbc:mysql://--SERVIDOR--/--BD--","--USER--","--PASS--");
-            //con = (Connection) DriverManager.getConnection("https://proyectoma2022.000webhostapp.com/conexionBD.php");
-            
-            //con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/id19227042_proyectoagiles","id19227042_root","MAgiles2022P$%@");
-            //con = (Connection) DriverManager.getConnection("jdbc:mysql://databases.000webhost.com/id19227042_proyectoagiles","id19227042_root","MAgiles2022P$%@");
-*/        
-            } catch (Exception e) {
-            System.out.println(e);
+            con = (Connection) DriverManager.getConnection("jdbc:mysql://sql10.freemysqlhosting.net/sql10508766","sql10508766","fsB6zlVxWF");
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
-            
+            System.out.println(e);
         }
         return con;
     }

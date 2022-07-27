@@ -347,7 +347,7 @@ public class Info_Prof extends javax.swing.JFrame {
     
     //TABLA
     public void disenoBase(){
-        String[] columnas = {"Empleador","Cargo","Contacto","Referencia","Tiempo"};
+        String[] columnas = {"Empleador","Cargo","Contacto","Tiempo"};
         tblModel = new DefaultTableModel(null,columnas){
             public boolean isCellEditable(int row, int column){
                 return false;
@@ -368,7 +368,7 @@ public class Info_Prof extends javax.swing.JFrame {
         Object[] registros = new Object[40];
         String sql = "SELECT * FROM experiencia_laboral WHERE CED_EMP_EXP='"+cd+"'";
         Conexion cc = new Conexion();
-        Connection cn = cc.localhost("proy_agiles");
+        Connection cn = cc.localhost("proy_final");
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -376,8 +376,7 @@ public class Info_Prof extends javax.swing.JFrame {
                 registros[0] = rs.getString("EMP_EXP");
                 registros[1] = rs.getString("CAR_EXP");
                 registros[2] = rs.getString("CONT_EXP");
-                registros[3] = rs.getString("DIR_EXP");
-                registros[4] = rs.getString("TIE_EXP");
+                registros[3] = rs.getString("TIE_EXP");
                 tblModel.addRow(registros);
             }
             
@@ -388,28 +387,28 @@ public class Info_Prof extends javax.swing.JFrame {
     }
     
     public void cargarBDempleados(){
-        String sql = "SELECT * FROM empleados WHERE CED_EMP='"+cd+"'";
+        String sql = "SELECT * FROM empleados WHERE emp_cedula='"+cd+"'";
         Conexion cc = new Conexion();
-        Connection cn = cc.localhost("proy_agiles");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate fechaNac = null;
+        Connection cn = cc.localhost("proy_final");
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDate fechaNac = null;
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while(rs.next()){
-                this.lblCedula.setText(rs.getString("CED_EMP"));
-                this.lblNombre.setText(rs.getString("NOM_EMP")+" "+rs.getString("APE_EMP"));
-                this.lblNacionalidad.setText(rs.getString("NAC_EMP"));
-                fechaNac = LocalDate.parse(rs.getString("FEC_NAC_EMP"), formatter);
-                this.lblTelefono.setText(rs.getString("TEL_EMP"));
-                this.lblEstudios.setText(rs.getString("ESTU_EMP"));      
+                this.lblCedula.setText(rs.getString("emp_cedula"));
+                this.lblNombre.setText(rs.getString("emp_nombre")+" "+rs.getString("emp_apellido"));
+                this.lblNacionalidad.setText(rs.getString("emp_nacionalidad"));
+//                fechaNac = LocalDate.parse(rs.getString("FEC_NAC_EMP"), formatter);
+                this.lblTelefono.setText(rs.getString("emp_telefono"));
+                this.lblEstudios.setText(rs.getString("emp_est"));      
             }
             this.lblAreasOficio.setText("Ninguno");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
-        Period edad = Period.between(fechaNac, LocalDate.now());
-        this.lblEdad.setText(String.valueOf(edad.getYears()));
+//        Period edad = Period.between(fechaNac, LocalDate.now());
+//        this.lblEdad.setText(String.valueOf(edad.getYears()));
         
     }
     
@@ -425,7 +424,7 @@ public class Info_Prof extends javax.swing.JFrame {
     }//GEN-LAST:event_jpEncabezadoMouseDragged
 
     private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
-        this.setVisible(true);
+
     }//GEN-LAST:event_formMouseEntered
 
     private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited

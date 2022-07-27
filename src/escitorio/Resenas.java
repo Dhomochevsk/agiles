@@ -47,7 +47,7 @@ public class Resenas extends javax.swing.JFrame {
 
     
     public void disenoBase(){
-        String[] columnas = {"Usuario","Calificación","Fecha","Reseñas"};
+        String[] columnas = {"Usuario","Calificación","Fecha","Reseña"};
         tblModel = new DefaultTableModel(null,columnas){
             public boolean isCellEditable(int row, int column){
                 return false;
@@ -61,28 +61,24 @@ public class Resenas extends javax.swing.JFrame {
         this.disenoBase();
         Object[] registros = new Object[40]; 
         String sql = "SELECT * FROM contrataciones WHERE ced_emp_con='"+cd+"'";
-        //String sql = "SELECT * FROM contrataciones WHERE ced_emp_con='1802346793'";
-        String sql2 = "SELECT * FROM valoraciones WHERE ID_CONT_VAL IN(SELECT id_con FROM contrataciones WHERE ced_emp_con='"+cd+"')";
-        //String sql2 = "SELECT * FROM valoraciones WHERE ID_CONT_VAL IN(SELECT id_con FROM contrataciones WHERE ced_emp_con='1802346793')";
+        String sql2 = "SELECT * FROM clientes WHERE CED_CLI=";
         Conexion cc = new Conexion();
-        Connection cn = cc.localhost("proy_agiles");
+        Connection cn = cc.localhost("proy_final");
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             int i = 0;
             while(rs.next()){
                 ArrayList<String> registro = new ArrayList();
-                registros[0] = rs.getString("ced_cli_con");
+                String ced = rs.getString("ced_cli_con"); 
                 Statement st2 = cn.createStatement();
-                ResultSet rs2 = st2.executeQuery(sql2);
+                ResultSet rs2 = st2.executeQuery(sql2+ced);
                 while(rs2.next()){
-                registro.add(rs2.getString("CANT_VAL"));
-                registro.add(rs2.getString("RESN_VAL"));
+                registros[0] = rs2.getString("USE_CLI");
                 }
-                registros[1] = registro.get(i);
+                registros[1] = rs.getString("PUNT_CON");
                 registros[2] = rs.getString("FEC_CON");
-                registros[3] = registro.get(i+1);
-                i=i+2;
+                registros[3] = rs.getString("RES_CON");
                 tblModel.addRow(registros);
             }
             
@@ -210,7 +206,7 @@ public class Resenas extends javax.swing.JFrame {
     }//GEN-LAST:event_jpEncabezadoMousePressed
 
     private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
-        this.setVisible(true);
+
     }//GEN-LAST:event_formMouseEntered
 
     private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited

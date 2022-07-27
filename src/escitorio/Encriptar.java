@@ -5,9 +5,11 @@
  */
 package escitorio;
 
-import org.apache.commons.codec.binary.Base64;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
+//import org.apache.commons.codec.binary.Base64;
 import java.security.MessageDigest;
 import java.util.Arrays;
+//import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -43,7 +45,8 @@ public class Encriptar {
             
             byte [] cadena = encriptar.getBytes("UTF-8");
             byte [] encriptada = cipher.doFinal(cadena);
-            String cadena_encriptada = Base64.encodeBase64String(encriptada);
+            //String cadena_encriptada = Base64.encodeBase64String(encriptada);
+            String cadena_encriptada = Base64.encode(encriptada);
             return cadena_encriptada;
             
             
@@ -61,7 +64,8 @@ public class Encriptar {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
             
-            byte [] cadena = Base64.decodeBase64(desencriptar);
+            //byte [] cadena = Base64.decodeBase64(desencriptar);
+            byte [] cadena = Base64.decode(desencriptar);
             byte [] desencriptacioon = cipher.doFinal(cadena);
             String cadena_desencriptada = new String(desencriptacioon);
             return cadena_desencriptada;

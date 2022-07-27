@@ -8,6 +8,7 @@ CREATE TABLE CLIENTES (
 	PASS_CLI varchar(50) NOT NULL
 );
 
+INSERT INTO CLIENTES VALUES('1234','Lucas','Godinez','lu_cas@mail.com','0997654321','L1','1234');
 INSERT INTO CLIENTES VALUES('1801','LUIS','SANCHEZ','san@mail.com','0987654321','san1','pass123');
 
 

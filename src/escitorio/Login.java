@@ -44,7 +44,7 @@ public class Login extends javax.swing.JFrame {
             String usuario =jtxt_usuario.getText();
             String contraseña = jtxt_pass.getText();
             Encriptar pass = new Encriptar();
-            String sql ="SELECT * from clientes WHERE USE_CLI='"+usuario+"' AND PASS_CLI='"+pass.Encriptar(contraseña)+"' ;";
+            String sql ="SELECT * from CLIENTES WHERE USE_CLI='"+usuario+"' AND PASS_CLI='"+pass.Encriptar(contraseña)+"' ;";
             Statement psd = cn.createStatement();
             ResultSet rs=psd.executeQuery(sql);    
             if(rs.next())

@@ -30,98 +30,139 @@ public class Menu_Principal extends javax.swing.JFrame {
     private Icon icono;
     DefaultTableModel modelo = new DefaultTableModel();
     String user;
+    String type="";
+    String stado="";
     
     public Menu_Principal(String id) {
         initComponents();
         user=id;
         this.setLocationRelativeTo(null);
-        cargarTabla();
+        cargarTabla(type,stado);
         cargarTablaContactos();
+        jbtx_IniCon.setEnabled(false);
+        jbtx_FinCon.setEnabled(false);
+        jbtn_DeleteCon.setEnabled(false);
         this.pintarImagen(this.lblImagenLogo, "src/imagenes/Logo Aplicacion.png");
         this.pintarImagen(this.lblImagenContrac, "src/imagenes/contratacion.png");
-        this.pintarImagen(this.lblImagenHist, "src/imagenes/cobertura-de-contrato.png");
         this.pintarImagen(this.lblImagenGuard, "src/imagenes/Guardar-icon.png");
     }
 
-    public void cargarTabla(){
+    public void cargarTabla(String tipo, String estado){
+        
+        
         try {
-            String [] titulos = {"EMPLEADO","CLIENTE","ESTADO"};
-            String [] registros = new String[3];
+            String [] titulos = {"#","CLIENTE","EMPLEADO","ESTADO","PROCESO"};
+            String [] registros = new String[5];
             modelo = new DefaultTableModel(null,titulos);
             Conexion cc=new Conexion();
             Connection cn = cc.localhost("proy_agiles");
-            String sql = "select *from contrataciones where CED_CLI_CON=(select CED_CLI from CLIENTES where USE_CLI='"+user+"');";
+            
+            String sql ="";
+            String comando ="select *from CONTRATACIONES where CED_CLI_CON=(select CED_CLI from CLIENTES where USE_CLI='"+user+"')";
+            String testigo ="";
+            switch(tipo) 
+            {
+                             
+            case "Aceptados":
+            testigo=comando+" and EST_INI_CON=true";
+            break;
+            case "Pendientes":
+            testigo=comando+" and EST_INI_CON is NULL";
+            break;
+            case "Rechasados":
+            testigo=comando+" and EST_INI_CON=false";
+            break;
+            default:
+            testigo=comando+"";
+            }   
+            
+///////////////////////////////////////////////////////////////////////////////
+            switch(estado) 
+            {                           
+            case "Activos":
+            sql=testigo+" and EST_FIN_CON=false;";
+            break;
+            case "Terminados":
+            sql=testigo+" and EST_FIN_CON=true;";
+            break;
+            default:
+            sql=testigo+";";         
+            }  
+///////////////////////////////////////////////////////////////////////////////
+            
             Statement psd = cn.createStatement();
             ResultSet rs=psd.executeQuery(sql);
             while(rs.next())
             { 
-                registros[0]=rs.getString("CED_EMP_CON");
+                registros[0]=rs.getString("ID_CON");
                 registros[1]=rs.getString("CED_CLI_CON");
+                registros[2]=rs.getString("CED_EMP_CON");
                // registros[2]="PENDIENTE";
 
-                if(rs.getBoolean("EST_CON"))
+                if(rs.getBoolean("EST_INI_CON"))
                 {
-                    registros[2]="Aceptado";
+                    registros[3]="Aceptado";
                 } 
                 else{
-                    if(rs.getString("EST_CON")==null)
-                    registros[2]="Pendiente";
+                    if(rs.getString("EST_INI_CON")==null)
+                    registros[3]="Pendiente";
                     else
-                        registros[2]="Rechazado";
+                        registros[3]="Rechazado";
+                }
+                
+                if(rs.getBoolean("EST_FIN_CON"))
+                {
+                    registros[4]="Terminado";
+                } 
+                else{
+                    if(rs.getString("EST_FIN_CON")==null)
+                    registros[4]=" - - - ";
+                    else
+                        registros[4]="Activo";
                 }
 
                 modelo.addRow(registros);
+                
             }
-            jtbl_ContratosRecientes.setModel(modelo);;
+            jtbl_ContratosRecientes.setModel(modelo);
+
         } catch (SQLException ex) {
             JOptionPane.showConfirmDialog(null, ex);
         }
     }
     
     public void cargarTablaContactos(){
+        
         try {
-            String [] titulos = {"Usuario","Descripcion"};
-            String [] registros = new String[2];
+            String [] titulos = {"EMPLEADO","Descripcion","Telefono","ID"};
+            String [] registros = new String[4];
             modelo = new DefaultTableModel(null,titulos);
             Conexion cc=new Conexion();
             Connection cn = cc.localhost("proy_agiles");
-            String sql = "select E.USU_EMP, C.DES_CONT from CONTACTOS C, EMPLEADOS E where C.USE_CLI_CONT='"+user+"' AND E.CED_EMP =(SELECT CED_EMP_CONT FROM CONTACTOS WHERE USE_CLI_CONT='"+user+"');";
+            String sql = "select C.ID_CONT, C.DES_CONT, C.CED_EMP_CONT, C.CED_EMP_CONT ,"
+                    + " E.emp_telefono FROM CONTACTOS C, empleados E \n" +
+                "where ID_CONT in (SELECT ID_CONT FROM CONTACTOS WHERE USE_CLI_CONT = '"+user+"')\n" +
+                "GROUP BY ID_CONT";
             Statement psd = cn.createStatement();
             ResultSet rs=psd.executeQuery(sql);
             while(rs.next())
             {
                 
-                registros[0]=rs.getString("E.USU_EMP");
+                registros[0]=rs.getString("C.CED_EMP_CONT");
                 registros[1]=rs.getString("C.DES_CONT");
-
+                registros[2]=rs.getString("E.emp_telefono");
+                registros[3]=rs.getString("C.ID_CONT");
           
                 modelo.addRow(registros);
             }
-            jtbl_Contactos.setModel(modelo);;
+            jtbl_Contactos.setModel(modelo);
+            
         } catch (SQLException ex) {
             JOptionPane.showConfirmDialog(null, ex);
         }
     }
     
-    public int ultimoContacto(){
-
-        try {
-            Conexion cc=new Conexion();
-            Connection cn = cc.conexion();
-            String sql = "";
-            sql ="SELECT MAX(ID_CONT) FROM CONTACTOS;";
-            Statement psd = cn.createStatement();
-            ResultSet rs=psd.executeQuery(sql);
-            int valor =  rs.getInt("ID_CONT")+1;
-                return valor;
-   
-            
-        } catch (SQLException ex) {
-            return 0;
-        }
-    
-        
-    }
+ 
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -141,12 +182,10 @@ public class Menu_Principal extends javax.swing.JFrame {
         Minim = new javax.swing.JLabel();
         btnCerrar = new javax.swing.JPanel();
         X = new javax.swing.JLabel();
-        Contrataciones_Recientes = new javax.swing.JLabel();
+        jbtx_back = new javax.swing.JLabel();
         bgContrataciones = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtbl_ContratosRecientes = new javax.swing.JTable();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
         Contactos_Guardados = new javax.swing.JLabel();
         bgContacG = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -154,10 +193,14 @@ public class Menu_Principal extends javax.swing.JFrame {
         jpNuevaContra = new javax.swing.JPanel();
         lblImagenContrac = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        lblImagenHist = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         lblImagenGuard = new javax.swing.JLabel();
+        jcbx_contrataciones = new javax.swing.JComboBox<>();
+        jcbx_proceso = new javax.swing.JComboBox<>();
+        jbtx_FinCon = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jbtn_DeleteCon = new javax.swing.JButton();
+        jbtx_IniCon = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(630, 440));
@@ -276,16 +319,16 @@ public class Menu_Principal extends javax.swing.JFrame {
 
         bg.add(jpEncabezado, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1040, 130));
 
-        Contrataciones_Recientes.setBackground(new java.awt.Color(255, 255, 255));
-        Contrataciones_Recientes.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
-        Contrataciones_Recientes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Contrataciones_Recientes.setText("<html> Contrataciones <br> <center>Recientes</center> </html>");
-        Contrataciones_Recientes.addMouseListener(new java.awt.event.MouseAdapter() {
+        jbtx_back.setBackground(new java.awt.Color(255, 255, 255));
+        jbtx_back.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
+        jbtx_back.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jbtx_back.setText("<html> Contrataciones <br> <center>Recientes</center> </html>");
+        jbtx_back.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Contrataciones_RecientesMouseClicked(evt);
+                jbtx_backMouseClicked(evt);
             }
         });
-        bg.add(Contrataciones_Recientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 130, 400, 136));
+        bg.add(jbtx_back, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, 400, 136));
 
         bgContrataciones.setBackground(new java.awt.Color(217, 217, 217));
         bgContrataciones.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -303,34 +346,16 @@ public class Menu_Principal extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(jtbl_ContratosRecientes);
-
-        bgContrataciones.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 360, 340));
-
-        bg.add(bgContrataciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 360, 340));
-
-        jPanel3.setBackground(new java.awt.Color(204, 204, 204));
-
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("RECARGAR");
-        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+        jtbl_ContratosRecientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel4MouseClicked(evt);
+                jtbl_ContratosRecientesMouseClicked(evt);
             }
         });
+        jScrollPane1.setViewportView(jtbl_ContratosRecientes);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-        );
+        bgContrataciones.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 430, 300));
 
-        bg.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 70, 40));
+        bg.add(bgContrataciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 430, 300));
 
         Contactos_Guardados.setBackground(new java.awt.Color(255, 255, 255));
         Contactos_Guardados.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
@@ -354,11 +379,16 @@ public class Menu_Principal extends javax.swing.JFrame {
 
             }
         ));
+        jtbl_Contactos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtbl_ContactosMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jtbl_Contactos);
 
-        bgContacG.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 290, 370));
+        bgContacG.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 290));
 
-        bg.add(bgContacG, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 260, 290, 370));
+        bg.add(bgContacG, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 260, 350, 290));
 
         jpNuevaContra.setBackground(new java.awt.Color(125, 140, 125));
         jpNuevaContra.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -378,58 +408,82 @@ public class Menu_Principal extends javax.swing.JFrame {
         jpNuevaContraLayout.setHorizontalGroup(
             jpNuevaContraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpNuevaContraLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(jpNuevaContraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblImagenContrac, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jpNuevaContraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblImagenContrac, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpNuevaContraLayout.setVerticalGroup(
             jpNuevaContraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpNuevaContraLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblImagenContrac, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        bg.add(jpNuevaContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 260, 190, 170));
-
-        jPanel2.setBackground(new java.awt.Color(125, 140, 125));
-
-        lblImagenHist.setPreferredSize(new java.awt.Dimension(145, 155));
-
-        jLabel2.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
-        jLabel2.setText("<html>\n<center>\nHistorial de\n<br>\nContrataciones\n</center>\n</html>");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(lblImagenHist, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblImagenHist, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
-        );
-
-        bg.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 470, 170, 160));
+        bg.add(jpNuevaContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 260, 150, 170));
 
         lblImagenGuard.setBackground(new java.awt.Color(102, 255, 255));
         bg.add(lblImagenGuard, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 150, 90, 90));
+
+        jcbx_contrataciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Aceptados", "Rechasados", "Pendientes" }));
+        jcbx_contrataciones.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbx_contratacionesItemStateChanged(evt);
+            }
+        });
+        bg.add(jcbx_contrataciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 270, 100, -1));
+
+        jcbx_proceso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Activos", "Terminados" }));
+        jcbx_proceso.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbx_procesoItemStateChanged(evt);
+            }
+        });
+        bg.add(jcbx_proceso, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 270, 100, -1));
+
+        jbtx_FinCon.setText("Finalizar Contratacion");
+        jbtx_FinCon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtx_FinConActionPerformed(evt);
+            }
+        });
+        bg.add(jbtx_FinCon, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 600, 150, 40));
+
+        jButton1.setText("Añair Contacto");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        bg.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 560, 120, 30));
+
+        jbtn_DeleteCon.setText("Eliminar Contacto");
+        jbtn_DeleteCon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtn_DeleteConActionPerformed(evt);
+            }
+        });
+        bg.add(jbtn_DeleteCon, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 560, 150, 30));
+
+        jbtx_IniCon.setText("Iniciar Trabajo");
+        jbtx_IniCon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtx_IniConActionPerformed(evt);
+            }
+        });
+        bg.add(jbtx_IniCon, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 600, 150, 40));
+
+        jButton2.setText("REGRESAR");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        bg.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 110, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -482,14 +536,117 @@ public class Menu_Principal extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jpNuevaContraMouseClicked
 
-    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        cargarTabla();
-        cargarTablaContactos();
-    }//GEN-LAST:event_jLabel4MouseClicked
-
-    private void Contrataciones_RecientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Contrataciones_RecientesMouseClicked
+    private void jbtx_backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtx_backMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_Contrataciones_RecientesMouseClicked
+    }//GEN-LAST:event_jbtx_backMouseClicked
+
+    private void jcbx_contratacionesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbx_contratacionesItemStateChanged
+        type =jcbx_contrataciones.getSelectedItem().toString();
+        cargarTabla(type,stado);
+    }//GEN-LAST:event_jcbx_contratacionesItemStateChanged
+
+    private void jcbx_procesoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbx_procesoItemStateChanged
+        stado =jcbx_proceso.getSelectedItem().toString();
+        cargarTabla(type,stado);
+    }//GEN-LAST:event_jcbx_procesoItemStateChanged
+
+    private void jtbl_ContratosRecientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbl_ContratosRecientesMouseClicked
+        jbtx_FinCon.setEnabled(true);
+        jbtx_IniCon.setEnabled(true);
+    }//GEN-LAST:event_jtbl_ContratosRecientesMouseClicked
+
+    private void jbtx_FinConActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtx_FinConActionPerformed
+        if(jtbl_ContratosRecientes.getSelectedRow()!=-1)
+                    {
+                int fila=jtbl_ContratosRecientes.getSelectedRow();
+                String cod = jtbl_ContratosRecientes.getValueAt(fila, 0).toString();
+                String est = jtbl_ContratosRecientes.getValueAt(fila, 4).toString();
+                //Activo
+                if(est.equalsIgnoreCase("Activo")){   
+            try {
+                Conexion cc=new Conexion();
+                Connection cn = cc.localhost("proy_agiles");
+                String sql="UPDATE CONTRATACIONES SET EST_FIN_CON=true WHERE ID_CON='"+cod+"';";
+                PreparedStatement psd = cn.prepareStatement(sql);
+                int n =psd.executeUpdate();
+                if(n>0)
+                {
+                cargarTabla(type,stado);
+                }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,e);
+                }
+                
+                    }
+            }
+    }//GEN-LAST:event_jbtx_FinConActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        AñadirContacto nuevo = new AñadirContacto(user);
+        nuevo.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jbtn_DeleteConActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtn_DeleteConActionPerformed
+                if(jtbl_Contactos.getSelectedRow()!=-1)
+                    {
+                int fila=jtbl_Contactos.getSelectedRow();
+                String idcon = jtbl_Contactos.getValueAt(fila, 3).toString();
+
+                //Activo
+           
+            try {
+                Conexion cc=new Conexion();
+                Connection cn = cc.localhost("proy_agiles");
+                String sql="DELETE FROM CONTACTOS WHERE ID_CONT='"+idcon+"';";
+                PreparedStatement psd = cn.prepareStatement(sql);
+                int n =psd.executeUpdate();
+                
+                cargarTablaContactos();
+                
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,e);
+                }
+                
+                    
+            }
+    }//GEN-LAST:event_jbtn_DeleteConActionPerformed
+
+    private void jtbl_ContactosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbl_ContactosMouseClicked
+        jbtn_DeleteCon.setEnabled(true);
+        cargarTablaContactos();
+    }//GEN-LAST:event_jtbl_ContactosMouseClicked
+
+    private void jbtx_IniConActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtx_IniConActionPerformed
+        if(jtbl_ContratosRecientes.getSelectedRow()!=-1)
+                    {
+                int fila=jtbl_ContratosRecientes.getSelectedRow();
+                String cod = jtbl_ContratosRecientes.getValueAt(fila, 0).toString();
+                String est_A = jtbl_ContratosRecientes.getValueAt(fila, 3).toString();
+                String est = jtbl_ContratosRecientes.getValueAt(fila, 4).toString();
+                //Activo
+                if(est.equalsIgnoreCase(" - - - ") && est_A.equalsIgnoreCase("Aceptado")){   
+            try {
+                Conexion cc=new Conexion();
+                Connection cn = cc.localhost("proy_agiles");
+                String sql="UPDATE CONTRATACIONES SET EST_FIN_CON=false WHERE ID_CON='"+cod+"';";
+                PreparedStatement psd = cn.prepareStatement(sql);
+                int n =psd.executeUpdate();
+                if(n>0)
+                {
+                cargarTabla(type,stado);
+                }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,e);
+                }
+                
+                    }
+            }
+    }//GEN-LAST:event_jbtx_IniConActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        cargarTabla("","");
+        cargarTablaContactos();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -542,7 +699,6 @@ public class Menu_Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BookWork;
     private javax.swing.JLabel Contactos_Guardados;
-    private javax.swing.JLabel Contrataciones_Recientes;
     private javax.swing.JLabel Minim;
     private javax.swing.JLabel X;
     private javax.swing.JPanel bg;
@@ -550,13 +706,17 @@ public class Menu_Principal extends javax.swing.JFrame {
     private javax.swing.JPanel bgContrataciones;
     private javax.swing.JPanel btnCerrar;
     private javax.swing.JPanel btnMinim;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton jbtn_DeleteCon;
+    private javax.swing.JButton jbtx_FinCon;
+    private javax.swing.JButton jbtx_IniCon;
+    private javax.swing.JLabel jbtx_back;
+    private javax.swing.JComboBox<String> jcbx_contrataciones;
+    private javax.swing.JComboBox<String> jcbx_proceso;
     private javax.swing.JPanel jpBarraBotones;
     private javax.swing.JPanel jpEncabezado;
     private javax.swing.JPanel jpNuevaContra;
@@ -564,7 +724,6 @@ public class Menu_Principal extends javax.swing.JFrame {
     private javax.swing.JTable jtbl_ContratosRecientes;
     private javax.swing.JLabel lblImagenContrac;
     private javax.swing.JLabel lblImagenGuard;
-    private javax.swing.JLabel lblImagenHist;
     private javax.swing.JLabel lblImagenLogo;
     // End of variables declaration//GEN-END:variables
 }

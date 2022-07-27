@@ -19,10 +19,10 @@ public class Conexion {
     public Connection conexion(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            //con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/base_agil","root","");
-            con = (Connection) DriverManager.getConnection("jdbc:mysql://sql304.byetcluster.com/epiz_32140834_proyAgil","epiz_32140834","vLmK3TeqBnPok");
+            con = (Connection) DriverManager.getConnection("jdbc:mysql://sql10.freemysqlhosting.net/sql10508766","sql10508766","fsB6zlVxWF");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
+            System.out.println(e);
         }
         return con;
     }

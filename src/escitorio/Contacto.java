@@ -41,7 +41,7 @@ public class Contacto extends javax.swing.JFrame {
         try {
             Conexion cc=new Conexion();
             Connection cn = cc.localhost("proy_agiles");
-            String sql="insert into clientes(CED_CLI,NOM_CLI,APE_CLI,EMAIL_CLI,TEL_CLI,USE_CLI,PASS_CLI) values(?,?,?,?,?,?,?)";
+            String sql="insert into CLIENTES(CED_CLI,NOM_CLI,APE_CLI,EMAIL_CLI,TEL_CLI,USE_CLI,PASS_CLI) values(?,?,?,?,?,?,?)";
             PreparedStatement psd = cn.prepareStatement(sql);
             
             psd.setString(1, ced);
@@ -57,6 +57,9 @@ public class Contacto extends javax.swing.JFrame {
             {
                 this.dispose();
                 JOptionPane.showMessageDialog(null, "Se inserto correctamente");
+                Menu_Principal a = new Menu_Principal(c_usu);
+                a.setVisible(true);
+                this.setVisible(false);
             }
            
         } catch (SQLException ex) {
@@ -216,9 +219,7 @@ public class Contacto extends javax.swing.JFrame {
 
     private void jbl_AceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbl_AceptarMouseClicked
         crearUsuario(c_ced, c_nom,c_ape,c_mai,c_tel,c_usu,c_pas);
-        Menu_Principal a = new Menu_Principal(c_usu);
-        a.setVisible(true);
-        this.setVisible(false);
+        
     }//GEN-LAST:event_jbl_AceptarMouseClicked
 
     /**
